@@ -191,7 +191,8 @@ oscli       = &fff7
     inx                                                               ; 80bb: e8          .
     cpx #8                                                            ; 80bc: e0 08       ..
     bne loop_c80b3                                                    ; 80be: d0 f3       ..
-; Copy 10 pages from &8000 to &2600
+; Copy 10 pages from &8000 to &2600, which just fits in below mode 0 screen RAM at
+; &3000.
     lda #&80                                                          ; 80c0: a9 80       ..
     sta l0001                                                         ; 80c2: 85 01       ..
     lda #&26 ; '&'                                                    ; 80c4: a9 26       .&

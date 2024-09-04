@@ -4,15 +4,17 @@ inkey_key_f1                           = 142
 inkey_key_f2                           = 141
 osbyte_read_adc_or_get_buffer_status   = 128
 osbyte_scan_keyboard                   = 121
+our_osword1                            = 53
+our_osword2                            = 54
 
 ; Memory locations
 l0006           = &0006
 l0007           = &0007
 l0050           = &0050
 l0051           = &0051
-l00ef           = &00ef
-l00f0           = &00f0
-l00f1           = &00f1
+osbyte_osword_a = &00ef
+osbyte_osword_x = &00f0
+osbyte_osword_y = &00f1
 os_text_ptr     = &00f2
 l0355           = &0355
 l0da6           = &0da6
@@ -50,24 +52,24 @@ osbyte          = &fff4
     equb 0                                                            ; 8024: 00          .
     equs "(C) Tecnation 1984-1987 ", &0d, 0                           ; 8025: 28 43 29... (C)
 
-.loop_c803f
+.pla_rts1
     pla                                                               ; 803f: 68          h
-.loop_c8040
+.rts1
     rts                                                               ; 8040: 60          `
 
 .service_handler
-    jsr sub_ca800                                                     ; 8041: 20 00 a8     ..
+    jsr service_handler_subroutine                                    ; 8041: 20 00 a8     ..
     cmp #8                                                            ; 8044: c9 08       ..
-    bne loop_c8040                                                    ; 8046: d0 f8       ..
+    bne rts1                                                          ; 8046: d0 f8       ..
     pha                                                               ; 8048: 48          H
-    lda l00ef                                                         ; 8049: a5 ef       ..
-    cmp #&35 ; '5'                                                    ; 804b: c9 35       .5
-    bne loop_c803f                                                    ; 804d: d0 f0       ..
-    lda l00f0                                                         ; 804f: a5 f0       ..
+    lda osbyte_osword_a                                               ; 8049: a5 ef       ..
+    cmp #our_osword1                                                  ; 804b: c9 35       .5
+    bne pla_rts1                                                      ; 804d: d0 f0       ..
+    lda osbyte_osword_x                                               ; 804f: a5 f0       ..
     beq c8061                                                         ; 8051: f0 0e       ..
     pla                                                               ; 8053: 68          h
     cli                                                               ; 8054: 58          X
-    lda l00f0                                                         ; 8055: a5 f0       ..
+    lda osbyte_osword_x                                               ; 8055: a5 f0       ..
     ldx #&6c ; 'l'                                                    ; 8057: a2 6c       .l
     ldy #&80                                                          ; 8059: a0 80       ..
     jsr sub_c8317                                                     ; 805b: 20 17 83     ..
@@ -75,7 +77,7 @@ osbyte          = &fff4
     rts                                                               ; 8060: 60          `
 
 .c8061
-    lda l00f1                                                         ; 8061: a5 f1       ..
+    lda osbyte_osword_y                                               ; 8061: a5 f1       ..
     eor #&ff                                                          ; 8063: 49 ff       I.
     sta l0daa                                                         ; 8065: 8d aa 0d    ...
     pla                                                               ; 8068: 68          h
@@ -943,32 +945,33 @@ osbyte          = &fff4
     equb &0d,   0                                                     ; a7fb: 0d 00       ..
     equs "pSP"                                                        ; a7fd: 70 53 50    pSP
 
-.sub_ca800
+.service_handler_subroutine
     cmp #4                                                            ; a800: c9 04       ..
-    bne ca809                                                         ; a802: d0 05       ..
-    jmp ca8e7                                                         ; a804: 4c e7 a8    L..
+    bne service_handler_subroutine_part_2                             ; a802: d0 05       ..
+    jmp service_command                                               ; a804: 4c e7 a8    L..
 
-.loop_ca807
+.pla_rts2
     pla                                                               ; a807: 68          h
     rts                                                               ; a808: 60          `
 
-.ca809
+.service_handler_subroutine_part_2
     cmp #8                                                            ; a809: c9 08       ..
-    beq ca810                                                         ; a80b: f0 03       ..
-    jmp ca8e6                                                         ; a80d: 4c e6 a8    L..
+    beq service_osword                                                ; a80b: f0 03       ..
+    jmp service_handler_subroutine_rts                                ; a80d: 4c e6 a8    L..
 
-.ca810
+.service_osword
     pha                                                               ; a810: 48          H
-    lda l00ef                                                         ; a811: a5 ef       ..
-    cmp #&36 ; '6'                                                    ; a813: c9 36       .6
-    bne loop_ca807                                                    ; a815: d0 f0       ..
+    lda osbyte_osword_a                                               ; a811: a5 ef       ..
+    cmp #our_osword2                                                  ; a813: c9 36       .6
+    bne pla_rts2                                                      ; a815: d0 f0       ..
+.our_osword2_handler
     txa                                                               ; a817: 8a          .
     pha                                                               ; a818: 48          H
     tya                                                               ; a819: 98          .
     pha                                                               ; a81a: 48          H
-    lda l00f0                                                         ; a81b: a5 f0       ..
+    lda osbyte_osword_x                                               ; a81b: a5 f0       ..
     pha                                                               ; a81d: 48          H
-    lda l00f1                                                         ; a81e: a5 f1       ..
+    lda osbyte_osword_y                                               ; a81e: a5 f1       ..
     pha                                                               ; a820: 48          H
     lda #&e0                                                          ; a821: a9 e0       ..
     sta l18d6                                                         ; a823: 8d d6 18    ...
@@ -977,12 +980,12 @@ osbyte          = &fff4
     bne ca84d                                                         ; a82b: d0 20       .
     jsr sub_cb155                                                     ; a82d: 20 55 b1     U.
     pla                                                               ; a830: 68          h
-    sta l00f1                                                         ; a831: 85 f1       ..
+    sta osbyte_osword_y                                               ; a831: 85 f1       ..
     pla                                                               ; a833: 68          h
-    sta l00f0                                                         ; a834: 85 f0       ..
-    lda l00f0                                                         ; a836: a5 f0       ..
+    sta osbyte_osword_x                                               ; a834: 85 f0       ..
+    lda osbyte_osword_x                                               ; a836: a5 f0       ..
     pha                                                               ; a838: 48          H
-    lda l00f1                                                         ; a839: a5 f1       ..
+    lda osbyte_osword_y                                               ; a839: a5 f1       ..
     pha                                                               ; a83b: 48          H
     lda #&e0                                                          ; a83c: a9 e0       ..
     sta l18d6                                                         ; a83e: 8d d6 18    ...
@@ -1022,33 +1025,33 @@ osbyte          = &fff4
     sta l18d6                                                         ; a883: 8d d6 18    ...
 .ca886
     pla                                                               ; a886: 68          h
-    sta l00f1                                                         ; a887: 85 f1       ..
+    sta osbyte_osword_y                                               ; a887: 85 f1       ..
     pla                                                               ; a889: 68          h
-    sta l00f0                                                         ; a88a: 85 f0       ..
+    sta osbyte_osword_x                                               ; a88a: 85 f0       ..
     ldy #6                                                            ; a88c: a0 06       ..
     lda l18d6                                                         ; a88e: ad d6 18    ...
-    sta (l00f0),y                                                     ; a891: 91 f0       ..
+    sta (osbyte_osword_x),y                                           ; a891: 91 f0       ..
     ldy #3                                                            ; a893: a0 03       ..
 .loop_ca895
     lda l0da6,y                                                       ; a895: b9 a6 0d    ...
-    sta (l00f0),y                                                     ; a898: 91 f0       ..
+    sta (osbyte_osword_x),y                                           ; a898: 91 f0       ..
     dey                                                               ; a89a: 88          .
     bpl loop_ca895                                                    ; a89b: 10 f8       ..
     lda l18cd                                                         ; a89d: ad cd 18    ...
     cmp #2                                                            ; a8a0: c9 02       ..
     beq ca8af                                                         ; a8a2: f0 0b       ..
     ldy #6                                                            ; a8a4: a0 06       ..
-    lda (l00f0),y                                                     ; a8a6: b1 f0       ..
+    lda (osbyte_osword_x),y                                           ; a8a6: b1 f0       ..
     and user_via_orb_irb                                              ; a8a8: 2d 60 fe    -`.
     and #&e0                                                          ; a8ab: 29 e0       ).
-    sta (l00f0),y                                                     ; a8ad: 91 f0       ..
+    sta (osbyte_osword_x),y                                           ; a8ad: 91 f0       ..
 .ca8af
     lda l0da7                                                         ; a8af: ad a7 0d    ...
-    sta l00ef                                                         ; a8b2: 85 ef       ..
+    sta osbyte_osword_a                                               ; a8b2: 85 ef       ..
     lda l0da6                                                         ; a8b4: ad a6 0d    ...
     ldy #4                                                            ; a8b7: a0 04       ..
 .loop_ca8b9
-    lsr l00ef                                                         ; a8b9: 46 ef       F.
+    lsr osbyte_osword_a                                               ; a8b9: 46 ef       F.
     ror a                                                             ; a8bb: 6a          j
     dey                                                               ; a8bc: 88          .
     bne loop_ca8b9                                                    ; a8bd: d0 fa       ..
@@ -1057,29 +1060,29 @@ osbyte          = &fff4
     lsr a                                                             ; a8c4: 4a          J
 .ca8c5
     ldy #4                                                            ; a8c5: a0 04       ..
-    sta (l00f0),y                                                     ; a8c7: 91 f0       ..
+    sta (osbyte_osword_x),y                                           ; a8c7: 91 f0       ..
     lda l0da9                                                         ; a8c9: ad a9 0d    ...
-    sta l00ef                                                         ; a8cc: 85 ef       ..
+    sta osbyte_osword_a                                               ; a8cc: 85 ef       ..
     lda l0da8                                                         ; a8ce: ad a8 0d    ...
     ldy #5                                                            ; a8d1: a0 05       ..
 .loop_ca8d3
-    lsr l00ef                                                         ; a8d3: 46 ef       F.
+    lsr osbyte_osword_a                                               ; a8d3: 46 ef       F.
     ror a                                                             ; a8d5: 6a          j
     dey                                                               ; a8d6: 88          .
     bne loop_ca8d3                                                    ; a8d7: d0 fa       ..
     ldy #5                                                            ; a8d9: a0 05       ..
     eor #&1f                                                          ; a8db: 49 1f       I.
-    sta (l00f0),y                                                     ; a8dd: 91 f0       ..
+    sta (osbyte_osword_x),y                                           ; a8dd: 91 f0       ..
     pla                                                               ; a8df: 68          h
     tay                                                               ; a8e0: a8          .
     pla                                                               ; a8e1: 68          h
     tax                                                               ; a8e2: aa          .
     pla                                                               ; a8e3: 68          h
     lda #0                                                            ; a8e4: a9 00       ..
-.ca8e6
+.service_handler_subroutine_rts
     rts                                                               ; a8e6: 60          `
 
-.ca8e7
+.service_command
     pha                                                               ; a8e7: 48          H
     lda (os_text_ptr),y                                               ; a8e8: b1 f2       ..
     cmp #&70 ; 'p'                                                    ; a8ea: c9 70       .p
@@ -1951,8 +1954,6 @@ osbyte          = &fff4
 ; Automatically generated labels:
 ;     c8061
 ;     c8328
-;     ca809
-;     ca810
 ;     ca84d
 ;     ca858
 ;     ca860
@@ -1960,8 +1961,6 @@ osbyte          = &fff4
 ;     ca886
 ;     ca8af
 ;     ca8c5
-;     ca8e6
-;     ca8e7
 ;     ca8f0
 ;     ca8f9
 ;     ca920
@@ -1971,9 +1970,6 @@ osbyte          = &fff4
 ;     l0007
 ;     l0050
 ;     l0051
-;     l00ef
-;     l00f0
-;     l00f1
 ;     l0355
 ;     l0da6
 ;     l0da7
@@ -1985,16 +1981,12 @@ osbyte          = &fff4
 ;     la943
 ;     la944
 ;     la945
-;     loop_c803f
-;     loop_c8040
-;     loop_ca807
 ;     loop_ca895
 ;     loop_ca8b9
 ;     loop_ca8d3
 ;     loop_cb176
 ;     loop_cb1c2
 ;     sub_c8317
-;     sub_ca800
 ;     sub_cb155
     assert (255 - inkey_key_f0) EOR 128 == &a0
     assert (255 - inkey_key_f1) EOR 128 == &f1
@@ -2002,5 +1994,7 @@ osbyte          = &fff4
     assert copyright - rom_header == &24
     assert osbyte_read_adc_or_get_buffer_status == &80
     assert osbyte_scan_keyboard == &79
+    assert our_osword1 == &35
+    assert our_osword2 == &36
 
 save pydis_start, pydis_end
