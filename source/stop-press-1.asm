@@ -140,7 +140,7 @@ oscli       = &fff7
     pla                                                               ; 805b: 68          h
     pha                                                               ; 805c: 48          H
     cmp #3                                                            ; 805d: c9 03       ..
-    beq c8076                                                         ; 805f: f0 15       ..
+    beq c8076                                                         ; 805f: f0 15       ..             ; always branch?
     ldx #0                                                            ; 8061: a2 00       ..
     ldy #&5a ; 'Z'                                                    ; 8063: a0 5a       .Z
     jsr cb76b                                                         ; 8065: 20 6b b7     k.

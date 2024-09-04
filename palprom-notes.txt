@@ -1,0 +1,16 @@
+ // Switch points for Computer Concept 32k PALPROM
+wire acc2Bk0 = a806x || aBFCx;
+wire acc2Bk1 = a804x || aBFAx || aBFEx;
+
+Without having done a full disassembly:
+
+ROM 1 appears mostly full but it may be that BFCx is unused space, in which case it won't accidentally trip the switch point there (the other BFxx switch points would be fine anyway if this is bank 1)
+ROM 2 looks like it has fragments of the assembler source starting at &B4C8, so it is probably empty from there and thus won't accidentally trip the BFxx switch points
+
+Both ROMs have service handler code at 804x, so we'd need to relocate this in one of them and move it into free space at the end. Since ROM 2 looks much emptier, this suggests that we choose:
+ROM 1 == bank 1
+ROM 2 == bank 0
+CHANGE: ROM 2's service handler needs to move away from 804x
+
+ROM 1 has possibly-dead code from &8061-&806F and if it is dead we could trivially patch the cmp #/beq which just overlaps into &8060 to avoid touching the 806x switch point by accident.
+CHANGE: ROM 1's code needs simple patching to avoid 806x
