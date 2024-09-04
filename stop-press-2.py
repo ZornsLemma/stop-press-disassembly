@@ -31,4 +31,16 @@ entry(0xa817, "our_osword2_handler")
 
 expr(0x804c, "our_osword1")
 
+entry(0x8317, "jmp_a_minus_1_th_entry_in_table_at_yx")
+label(0x806c, "our_osword_1_x_handler_table")
+expr(0x8058, make_lo("our_osword_1_x_handler_table"))
+expr(0x805a, make_hi("our_osword_1_x_handler_table"))
+for x in range(26):
+    ptr = 0x806c + 2*x
+    addr = get_u16_binary(ptr)
+    name = "our_osword_1_x%d_handler" % x
+    entry(addr, name)
+    word(ptr)
+    expr(ptr, name)
+
 go()
