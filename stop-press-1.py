@@ -18,4 +18,7 @@ entry(0xb7c5, "print_nul_terminated_string_at_yx")
 expr(0x8055, make_lo("title"))
 expr(0x8057, make_hi("title"))
 
+label(0xbe9f, "process_string")
+comment(0x80c0, "Copy 10 pages from &8000 to &2600, which just fits in below mode 0 screen RAM at &3000.")
+
 go()

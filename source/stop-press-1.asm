@@ -185,12 +185,13 @@ oscli       = &fff7
     ldx #0                                                            ; 80b1: a2 00       ..
 .loop_c80b3
     lda (os_text_ptr),y                                               ; 80b3: b1 f2       ..
-    cmp lbe9f,x                                                       ; 80b5: dd 9f be    ...
+    cmp process_string,x                                              ; 80b5: dd 9f be    ...
     bne ply_plx_pla_rts                                               ; 80b8: d0 da       ..
     iny                                                               ; 80ba: c8          .
     inx                                                               ; 80bb: e8          .
     cpx #8                                                            ; 80bc: e0 08       ..
     bne loop_c80b3                                                    ; 80be: d0 f3       ..
+; Copy 10 pages from &8000 to &2600
     lda #&80                                                          ; 80c0: a9 80       ..
     sta l0001                                                         ; 80c2: 85 01       ..
     lda #&26 ; '&'                                                    ; 80c4: a9 26       .&
@@ -2670,7 +2671,7 @@ oscli       = &fff7
     equb &0d                                                          ; be9a: 0d          .
     equs "pMP"                                                        ; be9b: 70 4d 50    pMP
     equb &0d                                                          ; be9e: 0d          .
-.lbe9f
+.process_string
     equs "PROCESS"                                                    ; be9f: 50 52 4f... PRO
     equb &0d, &10, &18                                                ; bea6: 0d 10 18    ...
 .lbea9
@@ -2864,7 +2865,6 @@ oscli       = &fff7
 ;     l2601
 ;     l2707
 ;     l2800
-;     lbe9f
 ;     lbea9
 ;     lbecb
 ;     lbecc
