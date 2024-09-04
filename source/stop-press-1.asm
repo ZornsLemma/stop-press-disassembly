@@ -124,7 +124,7 @@ oscli       = &fff7
     pha                                                               ; 8041: 48          H
     lda l00f8                                                         ; 8042: a5 f8       ..
     cmp #3                                                            ; 8044: c9 03       ..
-    beq service_auto_boot                                             ; 8046: f0 0b       ..
+    beq service_auto_boot_and_help                                    ; 8046: f0 0b       ..
     cmp #9                                                            ; 8048: c9 09       ..
     bne service_handler_part_2                                        ; 804a: d0 61       .a
 .service_help
@@ -132,7 +132,7 @@ oscli       = &fff7
     lda #&0a                                                          ; 804d: a9 0a       ..
     jsr oswrch                                                        ; 804f: 20 ee ff     ..            ; Write character 10
     txa                                                               ; 8052: 8a          .
-.service_auto_boot
+.service_auto_boot_and_help
     pha                                                               ; 8053: 48          H
     ldx #<title                                                       ; 8054: a2 09       ..
     ldy #>title                                                       ; 8056: a0 80       ..
@@ -140,7 +140,7 @@ oscli       = &fff7
     pla                                                               ; 805b: 68          h
     pha                                                               ; 805c: 48          H
     cmp #3                                                            ; 805d: c9 03       ..
-    beq c8076                                                         ; 805f: f0 15       ..             ; always branch?
+    beq c8076                                                         ; 805f: f0 15       ..
     ldx #0                                                            ; 8061: a2 00       ..
     ldy #&5a ; 'Z'                                                    ; 8063: a0 5a       .Z
     jsr cb76b                                                         ; 8065: 20 6b b7     k.
