@@ -124,18 +124,19 @@ oscli       = &fff7
     pha                                                               ; 8041: 48          H
     lda l00f8                                                         ; 8042: a5 f8       ..
     cmp #3                                                            ; 8044: c9 03       ..
-    beq c8053                                                         ; 8046: f0 0b       ..
+    beq service_auto_boot                                             ; 8046: f0 0b       ..
     cmp #9                                                            ; 8048: c9 09       ..
-    bne c80ad                                                         ; 804a: d0 61       .a
+    bne service_handler_part_2                                        ; 804a: d0 61       .a
+.service_help
     tax                                                               ; 804c: aa          .
     lda #&0a                                                          ; 804d: a9 0a       ..
     jsr oswrch                                                        ; 804f: 20 ee ff     ..            ; Write character 10
     txa                                                               ; 8052: 8a          .
-.c8053
+.service_auto_boot
     pha                                                               ; 8053: 48          H
-    ldx #9                                                            ; 8054: a2 09       ..
-    ldy #&80                                                          ; 8056: a0 80       ..
-    jsr sub_cb7c5                                                     ; 8058: 20 c5 b7     ..
+    ldx #<title                                                       ; 8054: a2 09       ..
+    ldy #>title                                                       ; 8056: a0 80       ..
+    jsr print_nul_terminated_string_at_yx                             ; 8058: 20 c5 b7     ..
     pla                                                               ; 805b: 68          h
     pha                                                               ; 805c: 48          H
     cmp #3                                                            ; 805d: c9 03       ..
@@ -148,7 +149,7 @@ oscli       = &fff7
     beq c8076                                                         ; 806d: f0 07       ..
     ldx #&9a                                                          ; 806f: a2 9a       ..
     ldy #&80                                                          ; 8071: a0 80       ..
-    jsr sub_cb7c5                                                     ; 8073: 20 c5 b7     ..
+    jsr print_nul_terminated_string_at_yx                             ; 8073: 20 c5 b7     ..
 .c8076
     lda #&0d                                                          ; 8076: a9 0d       ..
     jsr oswrch                                                        ; 8078: 20 ee ff     ..            ; Write character 13
@@ -159,13 +160,13 @@ oscli       = &fff7
     beq c808d                                                         ; 8083: f0 08       ..
     lda #&0a                                                          ; 8085: a9 0a       ..
     jsr oswrch                                                        ; 8087: 20 ee ff     ..            ; Write character 10
-    jmp c8094                                                         ; 808a: 4c 94 80    L..
+    jmp ply_plx_pla_rts                                               ; 808a: 4c 94 80    L..
 
 .c808d
     ldx #&20 ; ' '                                                    ; 808d: a2 20       .
     ldy #&80                                                          ; 808f: a0 80       ..
-    jsr sub_cb7c5                                                     ; 8091: 20 c5 b7     ..
-.c8094
+    jsr print_nul_terminated_string_at_yx                             ; 8091: 20 c5 b7     ..
+.ply_plx_pla_rts
     pla                                                               ; 8094: 68          h
     tay                                                               ; 8095: a8          .
     pla                                                               ; 8096: 68          h
@@ -177,14 +178,15 @@ oscli       = &fff7
     equs "Re-check ROM 2"                                             ; 809e: 52 65 2d... Re-
     equb 0                                                            ; 80ac: 00          .
 
-.c80ad
+.service_handler_part_2
     cmp #4                                                            ; 80ad: c9 04       ..
-    bne c8094                                                         ; 80af: d0 e3       ..
+    bne ply_plx_pla_rts                                               ; 80af: d0 e3       ..
+.service_command
     ldx #0                                                            ; 80b1: a2 00       ..
 .loop_c80b3
     lda (os_text_ptr),y                                               ; 80b3: b1 f2       ..
     cmp lbe9f,x                                                       ; 80b5: dd 9f be    ...
-    bne c8094                                                         ; 80b8: d0 da       ..
+    bne ply_plx_pla_rts                                               ; 80b8: d0 da       ..
     iny                                                               ; 80ba: c8          .
     inx                                                               ; 80bb: e8          .
     cpx #8                                                            ; 80bc: e0 08       ..
@@ -2166,7 +2168,7 @@ oscli       = &fff7
     equb &b9,   0,   0, &20, &ee, &ff, &b9,   1,   0, &20, &ee, &ff   ; b7b7: b9 00 00... ...
     equb &68, &60                                                     ; b7c3: 68 60       h`
 
-.sub_cb7c5
+.print_nul_terminated_string_at_yx
     lda l0004                                                         ; b7c5: a5 04       ..
     pha                                                               ; b7c7: 48          H
     stx l0004                                                         ; b7c8: 86 04       ..
@@ -2717,11 +2719,8 @@ oscli       = &fff7
 .pydis_end
 
 ; Automatically generated labels:
-;     c8053
 ;     c8076
 ;     c808d
-;     c8094
-;     c80ad
 ;     c80d2
 ;     c816c
 ;     c8178
@@ -2900,7 +2899,6 @@ oscli       = &fff7
 ;     sub_cb64f
 ;     sub_cb6e7
 ;     sub_cb754
-;     sub_cb7c5
 ;     sub_cb7fc
 ;     sub_cb803
 ;     sub_cb854
@@ -2924,9 +2922,11 @@ oscli       = &fff7
     assert <(l0024) == &24
     assert <(l0100) == &00
     assert <(l1921) == &21
+    assert <title == &09
     assert >(l0024) == &00
     assert >(l0100) == &01
     assert >(l1921) == &19
+    assert >title == &80
     assert copyright - rom_header == &1f
     assert osbyte_acknowledge_escape == &7e
     assert osbyte_flush_buffer_class == &0f
