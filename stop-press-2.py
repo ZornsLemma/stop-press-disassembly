@@ -47,6 +47,7 @@ for x in range(26):
     word(ptr)
     expr(ptr, name)
 
+comment(0xa943, "The 'p' prefix is checked separately.")
 label(0xa943, "command_table")
 expr_label(0xa944, "command_table + 1")
 expr_label(0xa945, "command_table + 2")
@@ -59,8 +60,9 @@ expr(0xa90c, make_lo("command_done - 1"))
 ptr = 0xa943
 while get_u8_binary(ptr) != 0:
     ptr = stringz(ptr)
-    byte(ptr)
-    byte(ptr + 1)
+    handler = get_u16_binary(ptr) + 1
+    expr(ptr, make_subtract(entry(handler), 1))
+    word(ptr)
     ptr += 2
 
 go()
