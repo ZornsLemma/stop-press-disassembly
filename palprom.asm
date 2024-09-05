@@ -134,6 +134,13 @@ process_string = &be9f
     assert P% == &80d0
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
+org &bfe0
+.xbrkv_handler_switch
+    jmp xbrkv_handler
+org &8137
+    lda #<xbrkv_handler_switch
+org &813c
+    lda #>xbrkv_handler_switch
 
 copyblock &8000, &c000, &4000
 clear &8000, &c000
@@ -250,8 +257,6 @@ xbrkv_handler = &b995
     jmp xkeyv_handler
 .xevntv_handler_switch
     jmp xevntv_handler
-.xbrkv_handler_switch
-    jmp xbrkv_handler
 org &aab7
     lda #<xkeyv_handler_switch
 org &aabc
@@ -260,10 +265,6 @@ org &ab1d
     lda #<xevntv_handler_switch
 org &ab22
     lda #>xevntv_handler_switch
-org &8137
-    lda #<xbrkv_handler_switch
-org &813c
-    lda #>xbrkv_handler_switch
 
 
 copyblock &8000, &c000, &0000
