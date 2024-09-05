@@ -278,9 +278,9 @@ oscli       = &fff7
     jsr sub_cb854                                                     ; 8166: 20 54 b8     T.
     jsr sub_cbe1d                                                     ; 8169: 20 1d be     ..
 .c816c
-    ldx #&2d ; '-'                                                    ; 816c: a2 2d       .-
-    ldy #&bf                                                          ; 816e: a0 bf       ..
-    jsr cbe04                                                         ; 8170: 20 04 be     ..
+    ldx #<(stringnbf2d)                                               ; 816c: a2 2d       .-
+    ldy #>(stringnbf2d)                                               ; 816e: a0 bf       ..
+    jsr write_stringn_at_yx                                           ; 8170: 20 04 be     ..
     ldy #&12                                                          ; 8173: a0 12       ..
     jsr sub_cbde3                                                     ; 8175: 20 e3 bd     ..
 .c8178
@@ -785,15 +785,20 @@ oscli       = &fff7
     lda l1952                                                         ; 8526: ad 52 19    .R.
     and #3                                                            ; 8529: 29 03       ).
     jsr oswrch                                                        ; 852b: 20 ee ff     ..            ; Write character
-    ldx #&35 ; '5'                                                    ; 852e: a2 35       .5
-    ldy #&85                                                          ; 8530: a0 85       ..
-    jmp cbe04                                                         ; 8532: 4c 04 be    L..
+    ldx #<(stringn8535)                                               ; 852e: a2 35       .5
+    ldy #>(stringn8535)                                               ; 8530: a0 85       ..
+    jmp write_stringn_at_yx                                           ; 8532: 4c 04 be    L..
 
-    equb   8, &12,   3, &81, &10, &12,   0, &80, &1a, &a2, &0c, &4c   ; 8535: 08 12 03... ...
-    equb &45, &85, &a2, &0d, &20, &6b, &b7, &ad, &2b, &19, &c9,   1   ; 8541: 45 85 a2... E..
-    equb &f0, &15, &c9, &80, &90, &12, &a0, &1f, &20, &18, &be, &20   ; 854d: f0 15 c9... ...
-    equb &1f, &a9, &20, &1f, &a9, &20, &1f, &a9, &20, &1f, &a9, &38   ; 8559: 1f a9 20... ..
-    equb &60, &9b, &85, &83, &87, &a7, &88, &7b, &85, &7b, &85        ; 8565: 60 9b 85... `..
+.stringn8535
+    equb l853e - l8536                                                ; 8535: 08          .
+.l8536
+    equs &12, 3, &81, &10, &12, 0, &80, &1a                           ; 8536: 12 03 81... ...
+.l853e
+    equb &a2, &0c, &4c, &45, &85, &a2, &0d, &20, &6b, &b7, &ad, &2b   ; 853e: a2 0c 4c... ..L
+    equb &19, &c9,   1, &f0, &15, &c9, &80, &90, &12, &a0, &1f, &20   ; 854a: 19 c9 01... ...
+    equb &18, &be, &20, &1f, &a9, &20, &1f, &a9, &20, &1f, &a9, &20   ; 8556: 18 be 20... ..
+    equb &1f, &a9, &38, &60, &9b, &85, &83, &87, &a7, &88, &7b, &85   ; 8562: 1f a9 38... ..8
+    equb &7b, &85                                                     ; 856e: 7b 85       {.
     equs "` n"                                                        ; 8570: 60 20 6e    ` n
     equb &b1, &b0, &fa, &a0, &0f, &20, &e3, &bd, &20, &0b, &83, &b0   ; 8573: b1 b0 fa... ...
     equb &10, &a5, &2a, &10, &0c, &c0,   1, &d0, &f3, &8a, &a2, &66   ; 857f: 10 a5 2a... ..*
@@ -2593,7 +2598,8 @@ oscli       = &fff7
     ldy #>(l0100)                                                     ; bdff: a0 01       ..
     jmp oscli                                                         ; be01: 4c f7 ff    L..
 
-.cbe04
+; ***************************************************************************************
+.write_stringn_at_yx
     stx l0004                                                         ; be04: 86 04       ..
     sty l0005                                                         ; be06: 84 05       ..
     ldy #0                                                            ; be08: a0 00       ..
@@ -2698,8 +2704,13 @@ oscli       = &fff7
     equs "  Enter Filename : "                                        ; bf01: 20 20 45...   E
     equb &0d                                                          ; bf14: 0d          .
     equs "     No Such Filename !"                                    ; bf15: 20 20 20...
-    equb &0d, &0b, &18, &30,   0, &20,   0, &ae,   4, &9c,   3, &10   ; bf2c: 0d 0b 18... ...
-    equb &1a, &12                                                     ; bf38: 1a 12       ..
+    equb &0d                                                          ; bf2c: 0d          .
+.stringnbf2d
+    equb lbf39 - lbf2e                                                ; bf2d: 0b          .
+.lbf2e
+    equs &18, "0", 0, " ", 0, &ae, 4, &9c, 3, &10, &1a                ; bf2e: 18 30 00... .0.
+.lbf39
+    equb &12                                                          ; bf39: 12          .
     equs "          No Files !"                                       ; bf3a: 20 20 20...
     equb &0d, &0b, &0d, &0a                                           ; bf4e: 0d 0b 0d... ...
     equs " Title : "                                                  ; bf52: 20 54 69...  Ti
@@ -2784,7 +2795,6 @@ oscli       = &fff7
 ;     cb97b
 ;     cbd6e
 ;     cbded
-;     cbe04
 ;     cbe0e
 ;     cbe31
 ;     l0000
@@ -2867,11 +2877,15 @@ oscli       = &fff7
 ;     l2601
 ;     l2707
 ;     l2800
+;     l8536
+;     l853e
 ;     lbea9
 ;     lbecb
 ;     lbecc
 ;     lbecd
 ;     lbece
+;     lbf2e
+;     lbf39
 ;     loop_c80b3
 ;     loop_c80fe
 ;     loop_c8117
@@ -2924,12 +2938,18 @@ oscli       = &fff7
     assert <(l0024) == &24
     assert <(l0100) == &00
     assert <(l1921) == &21
+    assert <(stringn8535) == &35
+    assert <(stringnbf2d) == &2d
     assert <title == &09
     assert >(l0024) == &00
     assert >(l0100) == &01
     assert >(l1921) == &19
+    assert >(stringn8535) == &85
+    assert >(stringnbf2d) == &bf
     assert >title == &80
     assert copyright - rom_header == &1f
+    assert l853e - l8536 == &08
+    assert lbf39 - lbf2e == &0b
     assert osbyte_acknowledge_escape == &7e
     assert osbyte_flush_buffer_class == &0f
     assert osbyte_read_rom_ptr_table_low == &a8

@@ -25,4 +25,13 @@ expr(0x8057, make_hi("title"))
 label(0xbe9f, "process_string")
 comment(0x80c0, "Copy 10 pages from &8000 to &2600, which just fits in below mode 0 screen RAM at &3000.")
 
+def wsnyx_hook(runtime_addr, state, subroutine):
+    x_addr = state.get_previous_load_imm('x')
+    y_addr = state.get_previous_load_imm('y')
+    string_addr = acorn.xy_addr(x_addr, y_addr)
+    if string_addr is not None:
+        label(string_addr, "stringn%04x" % string_addr)
+        stringn(string_addr)
+subroutine(0xbe04, "write_stringn_at_yx", None, None, hook=wsnyx_hook, is_entry_point=True)
+
 go()
