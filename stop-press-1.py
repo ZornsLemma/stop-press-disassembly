@@ -86,5 +86,14 @@ for i in range(5):
     name = entry(addr)
     word(ptr)
     expr(ptr, name)
+label(0x8b83, "jump_table3")
+expr(0x8bae, make_lo("jump_table3"))
+expr(0x8bb0, make_hi("jump_table3"))
+for i in range(5):
+    ptr = 0x8b83 + i*2
+    addr = get_u16_binary(ptr)
+    name = entry(addr)
+    word(ptr)
+    expr(ptr, name)
 
 go()
