@@ -298,6 +298,9 @@ org &ab22
 ; TODO: Temporary hack to never enable vsync event
 org &ab2f
     nop:nop:nop
+; TODO: Temporary hack to never install keyv handler
+org &aa95
+    rts
 
 copyblock &8000, &c000, &0000
 
