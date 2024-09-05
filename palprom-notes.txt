@@ -13,3 +13,9 @@ ROM 2 == bank 0
 CHANGE: ROM 2's service handler needs to move away from 804x
 
 CHANGE: ROM 1's code needs simple patching to avoid 806x
+
+
+
+
+Is this never going to work? We have EVNTV (and KEYV?) "constantly" paging in bank 0 with the support ROM. This means any code executing in the main ROM in bank 1 is going to get paged out for "interrupts" and won't be restored. Maybe I'm missing something, because while this feels like something that could well be going wrong, I'd have expected crashes rather than the system seeming to be tying itself doing something semi-reasonable but possibly in a large infinite loop or something.
+- it feels a bit clunky but is there any prospect of installing these interrupt handlers to run at a non-switching address which is duplicated in both banks and *then* have them JSR to the bank switching address, and then after the JSR returns do a dummy write to "the current bank's" switching zone to ensure the previous bank is paged in before the interrupt returns? This might work, need to chew it over a bit. Obviously interrupts *from other ROMs* which trigger service calls are going to break this irreversibly, but I am not sure that is really going to be a big thing - if this was really a concern, I'm not sure a PALPROM could work at all because it would be happily running code from one bank or the other as (say) the current language and then an interrupt would blow its bank selection away. Even if the PALPROM's service handler only ever used one bank, there would still be a switch and you could never run code from the other bank without fear of an interrupt triggering a service and losing the code you're running.
