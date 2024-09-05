@@ -138,20 +138,19 @@ process_string = &be9f
 org &bf80
 ; TODO: Should prob use macros to simplify code and ensure these are "same" (except for bit address) in both banks
 .xbrkv_handler_both_bank_1
-    jsr xbrkv_handler_switch
-.common_bank_1
-    php
-    bit &bfe0
-    plp
-    rts
+    jmp xbrkv_handler_switch
 .xevntv_handler_both_bank_1
-    jsr xevntv_handler_switch
-    jmp common_bank_1
+    jmp xevntv_handler_bank_1
 .xkeyv_handler_both_bank_1
-    jsr xkeyv_handler_switch
-    jmp common_bank_1
+    jmp xkeyv_handler_bank_1
     assert P% <= &bfa0
 org &bfe0 ; bank 1 switching zone
+.xevntv_handler_bank_1
+    jsr xevntv_handler_switch
+    rts
+.xkeyv_handler_bank_1
+    jsr xkeyv_handler_switch
+    rts
 xbrkv_handler = &b995
 .xbrkv_handler_switch
     jmp xbrkv_handler
@@ -268,20 +267,16 @@ our_osword_1_x25_handler = &9584
 
 org &bf80
 .xbrkv_handler_both_bank_0
-    jsr xbrkv_handler_switch
-.common_bank_0
-    php
-    bit &bfc0
-    plp
-    rts
+    jmp xbrkv_handler_bank_0
 .xevntv_handler_both_bank_0
-    jsr xevntv_handler_switch
-    jmp common_bank_0
+    jmp xevntv_handler_switch
 .xkeyv_handler_both_bank_0
-    jsr xkeyv_handler_switch
-    jmp common_bank_0
+    jmp xkeyv_handler_switch
     assert P% <= &bfa0
 org &bfc0 ; bank 0 switching zone
+.xbrkv_handler_bank_0
+    jsr xbrkv_handler_switch
+    rts
 xkeyv_handler = &a9f9
 xevntv_handler = &b1d1
 .xkeyv_handler_switch
