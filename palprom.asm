@@ -134,13 +134,31 @@ process_string = &be9f
     assert P% == &80d0
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
-org &bfe0
+
+org &bf80
+; TODO: Should prob use macros to simplify code and ensure these are "same" (except for bit address) in both banks
+.xbrkv_handler_both_bank_1
+    jsr xbrkv_handler_switch
+.common_bank_1
+    php
+    bit &bfe0
+    plp
+    rts
+.xevntv_handler_both_bank_1
+    jsr xevntv_handler_switch
+    jmp common_bank_1
+.xkeyv_handler_both_bank_1
+    jsr xkeyv_handler_switch
+    jmp common_bank_1
+    assert P% <= &bfa0
+org &bfe0 ; bank 1 switching zone
+xbrkv_handler = &b995
 .xbrkv_handler_switch
     jmp xbrkv_handler
 org &8137
-    lda #<xbrkv_handler_switch
+    lda #<xbrkv_handler_both_bank_1
 org &813c
-    lda #>xbrkv_handler_switch
+    lda #>xbrkv_handler_both_bank_1
 
 copyblock &8000, &c000, &4000
 clear &8000, &c000
@@ -248,23 +266,36 @@ our_osword_1_x25_handler = &9584
     equw our_osword_1_x25_handler                                     ; 809e: 84 95       ..
     assert P% <= &BFA0
 
-; Bank 1 switching zone - used for XKEYV/XEVNTV/XBRKV entry
-org &bfc0
+org &bf80
+.xbrkv_handler_both_bank_0
+    jsr xbrkv_handler_switch
+.common_bank_0
+    php
+    bit &bfc0
+    plp
+    rts
+.xevntv_handler_both_bank_0
+    jsr xevntv_handler_switch
+    jmp common_bank_0
+.xkeyv_handler_both_bank_0
+    jsr xkeyv_handler_switch
+    jmp common_bank_0
+    assert P% <= &bfa0
+org &bfc0 ; bank 0 switching zone
 xkeyv_handler = &a9f9
 xevntv_handler = &b1d1
-xbrkv_handler = &b995
 .xkeyv_handler_switch
     jmp xkeyv_handler
 .xevntv_handler_switch
     jmp xevntv_handler
 org &aab7
-    lda #<xkeyv_handler_switch
+    lda #<xkeyv_handler_both_bank_0
 org &aabc
-    lda #>xkeyv_handler_switch
+    lda #>xkeyv_handler_both_bank_0
 org &ab1d
-    lda #<xevntv_handler_switch
+    lda #<xevntv_handler_both_bank_0
 org &ab22
-    lda #>xevntv_handler_switch
+    lda #>xevntv_handler_both_bank_0
 
 
 copyblock &8000, &c000, &0000
