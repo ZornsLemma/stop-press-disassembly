@@ -18,6 +18,7 @@ osgbpb_read_file_names                 = 8
 osword_read_pixel                      = 9
 our_osword1                            = 53
 our_osword2                            = 54
+xkeyv_offset                           = 60
 
 ; Memory locations
 l0000           = &0000
@@ -3960,7 +3961,7 @@ oscli           = &fff7
 .command_pDE
     ldx #0                                                            ; a9c7: a2 00       ..
 .loop_ca9c9
-    lda la9ed,x                                                       ; a9c9: bd ed a9    ...
+    lda define_palette_data,x                                         ; a9c9: bd ed a9    ...
     jsr oswrch                                                        ; a9cc: 20 ee ff     ..            ; Write character
     inx                                                               ; a9cf: e8          .
     cpx #&0c                                                          ; a9d0: e0 0c       ..
@@ -3980,23 +3981,118 @@ oscli           = &fff7
     bpl ca9e1                                                         ; a9ea: 10 f5       ..
     rts                                                               ; a9ec: 60          `
 
-.la9ed
-    equb &13,   0,   7,   0,   0,   0, &13,   1,   0,   0,   0,   0   ; a9ed: 13 00 07... ...
-    equb   8, &b0,   5, &50,   3, &4c, &91, &aa, &e0, &ea, &d0, &2e   ; a9f9: 08 b0 05... ...
-    equb &ad, &cd, &18, &c9,   1, &f0, &19, &a9, &80, &a2,   0, &20   ; aa05: ad cd 18... ...
-    equb &f4, &ff, &8a, &29,   1, &aa, &a9, &80, &e0,   0, &d0,   5   ; aa11: f4 ff 8a... ...
-    equb &a2, &a0, &4c, &91, &aa, &aa, &28, &60, &ad, &60, &fe, &29   ; aa1d: a2 a0 4c... ..L
-    equb &20, &0a, &0a, &49, &80, &f0, &ed, &aa, &28, &60, &e0, &eb   ; aa29: 20 0a 0a...  ..
-    equb &d0, &12, &ad, &60, &fe, &29, &40, &0a, &49, &80, &f0,   3   ; aa35: d0 12 ad... ...
-    equb &aa, &28, &60, &a2, &f1, &4c, &91, &aa, &e0, &ec, &d0, &11   ; aa41: aa 28 60... .(`
-    equb &ad, &60, &fe, &29, &80, &49, &80, &f0,   3, &aa, &28, &60   ; aa4d: ad 60 fe... .`.
-    equb &a2, &f2, &4c, &91, &aa, &e0,   0, &d0, &2f, &ad, &cd, &18   ; aa59: a2 f2 4c... ..L
-    equb &c9,   1, &f0, &19, &a9, &80, &a2,   0, &20, &f4, &ff, &8a   ; aa65: c9 01 f0... ...
-    equb &29,   1, &aa, &a9,   0, &e0,   0, &d0,   5, &a2,   0, &4c   ; aa71: 29 01 aa... )..
-    equb &91, &aa, &aa, &28, &60, &ad, &60, &fe, &29, &e0, &c9, &e0   ; aa7d: 91 aa aa... ...
-    equb &f0,   6, &a9,   0, &aa, &68, &8a                            ; aa89: f0 06 a9... ...
-    equs "`(l"                                                        ; aa90: 60 28 6c    `(l
-    equb &ce, &18                                                     ; aa93: ce 18       ..
+.define_palette_data
+    equs &13, 0, 7, 0, 0, 0, &13, 1, 0, 0, 0, 0                       ; a9ed: 13 00 07... ...
+
+.xkeyv_handler
+    php                                                               ; a9f9: 08          .
+    bcs caa01                                                         ; a9fa: b0 05       ..
+    bvc caa01                                                         ; a9fc: 50 03       P.
+    jmp caa91                                                         ; a9fe: 4c 91 aa    L..
+
+.caa01
+    cpx #&ea                                                          ; aa01: e0 ea       ..
+    bne caa33                                                         ; aa03: d0 2e       ..
+    lda l18cd                                                         ; aa05: ad cd 18    ...
+    cmp #1                                                            ; aa08: c9 01       ..
+    beq caa25                                                         ; aa0a: f0 19       ..
+    lda #osbyte_read_adc_or_get_buffer_status                         ; aa0c: a9 80       ..
+    ldx #0                                                            ; aa0e: a2 00       ..
+    jsr osbyte                                                        ; aa10: 20 f4 ff     ..            ; Read the channel number last used for an ADC conversion and joystick fire buttons (X=0)
+    txa                                                               ; aa13: 8a          .              ; X has the joystick fire buttons status in the lower two bits: bit 0=left button, bit 1=right button
+    and #1                                                            ; aa14: 29 01       ).
+    tax                                                               ; aa16: aa          .
+    lda #&80                                                          ; aa17: a9 80       ..
+    cpx #0                                                            ; aa19: e0 00       ..
+    bne caa22                                                         ; aa1b: d0 05       ..
+.loop_caa1d
+    ldx #&a0                                                          ; aa1d: a2 a0       ..
+    jmp caa91                                                         ; aa1f: 4c 91 aa    L..
+
+.caa22
+    tax                                                               ; aa22: aa          .
+    plp                                                               ; aa23: 28          (
+    rts                                                               ; aa24: 60          `
+
+.caa25
+    lda user_via_orb_irb                                              ; aa25: ad 60 fe    .`.
+    and #&20 ; ' '                                                    ; aa28: 29 20       )
+    asl a                                                             ; aa2a: 0a          .
+    asl a                                                             ; aa2b: 0a          .
+    eor #&80                                                          ; aa2c: 49 80       I.
+    beq loop_caa1d                                                    ; aa2e: f0 ed       ..
+    tax                                                               ; aa30: aa          .
+    plp                                                               ; aa31: 28          (
+    rts                                                               ; aa32: 60          `
+
+.caa33
+    cpx #&eb                                                          ; aa33: e0 eb       ..
+    bne caa49                                                         ; aa35: d0 12       ..
+    lda user_via_orb_irb                                              ; aa37: ad 60 fe    .`.
+    and #&40 ; '@'                                                    ; aa3a: 29 40       )@
+    asl a                                                             ; aa3c: 0a          .
+    eor #&80                                                          ; aa3d: 49 80       I.
+    beq caa44                                                         ; aa3f: f0 03       ..
+    tax                                                               ; aa41: aa          .
+    plp                                                               ; aa42: 28          (
+    rts                                                               ; aa43: 60          `
+
+.caa44
+    ldx #&f1                                                          ; aa44: a2 f1       ..
+    jmp caa91                                                         ; aa46: 4c 91 aa    L..
+
+.caa49
+    cpx #&ec                                                          ; aa49: e0 ec       ..
+    bne caa5e                                                         ; aa4b: d0 11       ..
+    lda user_via_orb_irb                                              ; aa4d: ad 60 fe    .`.
+    and #&80                                                          ; aa50: 29 80       ).
+    eor #&80                                                          ; aa52: 49 80       I.
+    beq caa59                                                         ; aa54: f0 03       ..
+    tax                                                               ; aa56: aa          .
+    plp                                                               ; aa57: 28          (
+    rts                                                               ; aa58: 60          `
+
+.caa59
+    ldx #&f2                                                          ; aa59: a2 f2       ..
+    jmp caa91                                                         ; aa5b: 4c 91 aa    L..
+
+.caa5e
+    cpx #0                                                            ; aa5e: e0 00       ..
+    bne caa91                                                         ; aa60: d0 2f       ./
+    lda l18cd                                                         ; aa62: ad cd 18    ...
+    cmp #1                                                            ; aa65: c9 01       ..
+    beq caa82                                                         ; aa67: f0 19       ..
+    lda #osbyte_read_adc_or_get_buffer_status                         ; aa69: a9 80       ..
+    ldx #0                                                            ; aa6b: a2 00       ..
+    jsr osbyte                                                        ; aa6d: 20 f4 ff     ..            ; Read the channel number last used for an ADC conversion and joystick fire buttons (X=0)
+    txa                                                               ; aa70: 8a          .              ; X has the joystick fire buttons status in the lower two bits: bit 0=left button, bit 1=right button
+    and #1                                                            ; aa71: 29 01       ).
+    tax                                                               ; aa73: aa          .
+    lda #0                                                            ; aa74: a9 00       ..
+    cpx #0                                                            ; aa76: e0 00       ..
+    bne caa7f                                                         ; aa78: d0 05       ..
+    ldx #0                                                            ; aa7a: a2 00       ..
+    jmp caa91                                                         ; aa7c: 4c 91 aa    L..
+
+.caa7f
+    tax                                                               ; aa7f: aa          .
+    plp                                                               ; aa80: 28          (
+    rts                                                               ; aa81: 60          `
+
+.caa82
+    lda user_via_orb_irb                                              ; aa82: ad 60 fe    .`.
+    and #&e0                                                          ; aa85: 29 e0       ).
+    cmp #&e0                                                          ; aa87: c9 e0       ..
+    beq caa91                                                         ; aa89: f0 06       ..
+    lda #0                                                            ; aa8b: a9 00       ..
+    tax                                                               ; aa8d: aa          .
+    pla                                                               ; aa8e: 68          h
+    txa                                                               ; aa8f: 8a          .
+    rts                                                               ; aa90: 60          `
+
+.caa91
+    plp                                                               ; aa91: 28          (
+    jmp (l18ce)                                                       ; aa92: 6c ce 18    l..
 
 .sub_caa95
     lda keyv                                                          ; aa95: ad 28 02    .(.
@@ -4009,16 +4105,16 @@ oscli           = &fff7
     jsr osbyte                                                        ; aaa7: 20 f4 ff     ..            ; Read address of ROM pointer table
     txa                                                               ; aaaa: 8a          .              ; X=value of address of ROM pointer table (low byte)
     clc                                                               ; aaab: 18          .
-    adc #&3c ; '<'                                                    ; aaac: 69 3c       i<
+    adc #xkeyv_offset                                                 ; aaac: 69 3c       i<
     sta l00f8                                                         ; aaae: 85 f8       ..
     tya                                                               ; aab0: 98          .              ; Y=value of address of ROM pointer table (high byte)
     adc #0                                                            ; aab1: 69 00       i.
     sta l00f9                                                         ; aab3: 85 f9       ..
     ldy #0                                                            ; aab5: a0 00       ..
-    lda #&f9                                                          ; aab7: a9 f9       ..
+    lda #<xkeyv_handler                                               ; aab7: a9 f9       ..
     sta (l00f8),y                                                     ; aab9: 91 f8       ..
     iny                                                               ; aabb: c8          .
-    lda #&a9                                                          ; aabc: a9 a9       ..
+    lda #>xkeyv_handler                                               ; aabc: a9 a9       ..
     sta (l00f8),y                                                     ; aabe: 91 f8       ..
     iny                                                               ; aac0: c8          .
     lda romsel_copy                                                   ; aac1: a5 f4       ..
@@ -5589,6 +5685,17 @@ oscli           = &fff7
 ;     ca920
 ;     ca999
 ;     ca9e1
+;     caa01
+;     caa22
+;     caa25
+;     caa33
+;     caa44
+;     caa49
+;     caa59
+;     caa5e
+;     caa7f
+;     caa82
+;     caa91
 ;     cab3c
 ;     cab4f
 ;     cab73
@@ -5797,7 +5904,6 @@ oscli           = &fff7
 ;     la0d8
 ;     la190
 ;     la3d1
-;     la9ed
 ;     lad35
 ;     lb2e3
 ;     lb2f3
@@ -5852,6 +5958,7 @@ oscli           = &fff7
 ;     loop_ca8d3
 ;     loop_ca9a6
 ;     loop_ca9c9
+;     loop_caa1d
 ;     loop_caaee
 ;     loop_cab41
 ;     loop_cac0c
@@ -5913,6 +6020,7 @@ oscli           = &fff7
     assert <(l1921) == &21
     assert <(l192d) == &2d
     assert <our_osword_1_x_handler_table == &6c
+    assert <xkeyv_handler == &f9
     assert >(command_done - 1) == &a9
     assert >(l0024) == &00
     assert >(l0100) == &01
@@ -5921,6 +6029,7 @@ oscli           = &fff7
     assert >(l1921) == &19
     assert >(l192d) == &19
     assert >our_osword_1_x_handler_table == &80
+    assert >xkeyv_handler == &a9
     assert command_pDE - 1 == &a9c6
     assert command_pDF - 1 == &a97e
     assert command_pHP - 1 == &ab73
@@ -5974,5 +6083,6 @@ oscli           = &fff7
     assert our_osword_1_x7_handler == &82e7
     assert our_osword_1_x8_handler == &8392
     assert our_osword_1_x9_handler == &8264
+    assert xkeyv_offset == &3c
 
 save pydis_start, pydis_end

@@ -70,4 +70,13 @@ while get_u8_binary(ptr) != 0:
     word(ptr)
     ptr += 2
 
+label(0xa9ed, "define_palette_data")
+string(0xa9ed, 0xc)
+
+constant(0x3c, "xkeyv_offset")
+expr(0xaaad, "xkeyv_offset")
+entry(0xa9f9, "xkeyv_handler")
+expr(0xaab8, make_lo("xkeyv_handler"))
+expr(0xaabd, make_hi("xkeyv_handler"))
+
 go()
