@@ -56,7 +56,7 @@ rts = &8099
     skipto &8060
     ; This code won't be used normally, but having this here might help testing. I think it means we can use this variant on ROM 1 in place of the original along with the original ROM 2, in order to test the new service handler is basically sound.
     rts
-    skipto &8070
+    skipto &8080
 .skip_8060
     jsr print_nul_terminated_string_at_yx                             ; 8058: 20 c5 b7     ..
 ;    pla                                                               ; 805b: 68          h
@@ -69,8 +69,8 @@ rts = &8099
     lda l0daa                                                         ; 8068: ad aa 0d    ...
     cmp #&a5                                                          ; 806b: c9 a5       ..
     beq c8076                                                         ; 806d: f0 07       ..
-    ldx #&9a                                                          ; 806f: a2 9a       ..
-    ldy #&80                                                          ; 8071: a0 80       ..
+    ldx #<recheck                                                          ; 806f: a2 9a       ..
+    ldy #>recheck                                                          ; 8071: a0 80       ..
     jsr print_nul_terminated_string_at_yx                             ; 8073: 20 c5 b7     ..
 .c8076
 ;    lda #&0d                                                          ; 8076: a9 0d       ..
@@ -85,8 +85,19 @@ rts = &8099
 ;    jsr oswrch                                                        ; 8087: 20 ee ff     ..            ; Write character 10
 ;    jmp ply_plx_pla_rts                                               ; 808a: 4c 94 80    L..
      ;jmp c808d
-     nop:nop
-    assert P% == c808d
+    ldx #&20 ; ' '                                                    ; 808d: a2 20       .
+    ldy #&80                                                          ; 808f: a0 80       ..
+    jsr print_nul_terminated_string_at_yx                             ; 8091: 20 c5 b7     ..
+.ply_plx_pla_rts
+    pla                                                               ; 8094: 68          h
+    tay                                                               ; 8095: a8          .
+    pla                                                               ; 8096: 68          h
+    tax                                                               ; 8097: aa          .
+    pla                                                               ; 8098: 68          h
+    rts                                                               ; 8099: 60          `
+.recheck
+    equs "RCR2", 0
+    assert P% <= service_handler_part_2
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
 
