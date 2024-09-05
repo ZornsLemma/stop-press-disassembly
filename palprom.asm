@@ -123,7 +123,8 @@ process_string = &be9f
     ;lda #&80                                                          ; 80c0: a9 80       ..
     lda #&81 ; we need to skip the &80xx switching zoe
     sta l0001                                                         ; 80c2: 85 01       ..
-    lda #&26 ; '&'                                                    ; 80c4: a9 26       .&
+    ;lda #&26 ; '&'                                                    ; 80c4: a9 26       .&
+    lda #&27 ; compensate for not copying page &80
     sta l0003                                                         ; 80c6: 85 03       ..
     lda #0                                                            ; 80c8: a9 00       ..
     sta l0000                                                         ; 80ca: 85 00       ..
