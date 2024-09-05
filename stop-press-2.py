@@ -87,4 +87,8 @@ expr(0xab23, make_hi("xevntv_handler"))
 
 entry(0xb143, "skip_at_least_one_space_at_os_text_ptr")
 
+entry(0xaa91, "plp_jmp_old_keyv")
+label(0x18ce, "old_keyv")
+expr_label(0x18cf, "old_keyv + 1")
+
 go()

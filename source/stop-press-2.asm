@@ -121,8 +121,7 @@ l0de4           = &0de4
 l0de5           = &0de5
 l1800           = &1800
 l18cd           = &18cd
-l18ce           = &18ce
-l18cf           = &18cf
+old_keyv        = &18ce
 l18d0           = &18d0
 l18d1           = &18d1
 l18d2           = &18d2
@@ -3994,7 +3993,7 @@ oscli           = &fff7
     php                                                               ; a9f9: 08          .
     bcs caa01                                                         ; a9fa: b0 05       ..
     bvc caa01                                                         ; a9fc: 50 03       P.
-    jmp caa91                                                         ; a9fe: 4c 91 aa    L..
+    jmp plp_jmp_old_keyv                                              ; a9fe: 4c 91 aa    L..
 
 .caa01
     cpx #&ea                                                          ; aa01: e0 ea       ..
@@ -4013,7 +4012,7 @@ oscli           = &fff7
     bne caa22                                                         ; aa1b: d0 05       ..
 .loop_caa1d
     ldx #&a0                                                          ; aa1d: a2 a0       ..
-    jmp caa91                                                         ; aa1f: 4c 91 aa    L..
+    jmp plp_jmp_old_keyv                                              ; aa1f: 4c 91 aa    L..
 
 .caa22
     tax                                                               ; aa22: aa          .
@@ -4045,7 +4044,7 @@ oscli           = &fff7
 
 .caa44
     ldx #&f1                                                          ; aa44: a2 f1       ..
-    jmp caa91                                                         ; aa46: 4c 91 aa    L..
+    jmp plp_jmp_old_keyv                                              ; aa46: 4c 91 aa    L..
 
 .caa49
     cpx #&ec                                                          ; aa49: e0 ec       ..
@@ -4060,11 +4059,11 @@ oscli           = &fff7
 
 .caa59
     ldx #&f2                                                          ; aa59: a2 f2       ..
-    jmp caa91                                                         ; aa5b: 4c 91 aa    L..
+    jmp plp_jmp_old_keyv                                              ; aa5b: 4c 91 aa    L..
 
 .caa5e
     cpx #0                                                            ; aa5e: e0 00       ..
-    bne caa91                                                         ; aa60: d0 2f       ./
+    bne plp_jmp_old_keyv                                              ; aa60: d0 2f       ./
     lda l18cd                                                         ; aa62: ad cd 18    ...
     cmp #1                                                            ; aa65: c9 01       ..
     beq caa82                                                         ; aa67: f0 19       ..
@@ -4078,7 +4077,7 @@ oscli           = &fff7
     cpx #0                                                            ; aa76: e0 00       ..
     bne caa7f                                                         ; aa78: d0 05       ..
     ldx #0                                                            ; aa7a: a2 00       ..
-    jmp caa91                                                         ; aa7c: 4c 91 aa    L..
+    jmp plp_jmp_old_keyv                                              ; aa7c: 4c 91 aa    L..
 
 .caa7f
     tax                                                               ; aa7f: aa          .
@@ -4089,22 +4088,22 @@ oscli           = &fff7
     lda user_via_orb_irb                                              ; aa82: ad 60 fe    .`.
     and #&e0                                                          ; aa85: 29 e0       ).
     cmp #&e0                                                          ; aa87: c9 e0       ..
-    beq caa91                                                         ; aa89: f0 06       ..
+    beq plp_jmp_old_keyv                                              ; aa89: f0 06       ..
     lda #0                                                            ; aa8b: a9 00       ..
     tax                                                               ; aa8d: aa          .
     pla                                                               ; aa8e: 68          h
     txa                                                               ; aa8f: 8a          .
     rts                                                               ; aa90: 60          `
 
-.caa91
+.plp_jmp_old_keyv
     plp                                                               ; aa91: 28          (
-    jmp (l18ce)                                                       ; aa92: 6c ce 18    l..
+    jmp (old_keyv)                                                    ; aa92: 6c ce 18    l..
 
 .sub_caa95
     lda keyv                                                          ; aa95: ad 28 02    .(.
-    sta l18ce                                                         ; aa98: 8d ce 18    ...
+    sta old_keyv                                                      ; aa98: 8d ce 18    ...
     lda keyv+1                                                        ; aa9b: ad 29 02    .).
-    sta l18cf                                                         ; aa9e: 8d cf 18    ...
+    sta old_keyv + 1                                                  ; aa9e: 8d cf 18    ...
     lda #osbyte_read_rom_ptr_table_low                                ; aaa1: a9 a8       ..
     ldx #0                                                            ; aaa3: a2 00       ..
     ldy #&ff                                                          ; aaa5: a0 ff       ..
@@ -5828,7 +5827,6 @@ oscli           = &fff7
 ;     caa5e
 ;     caa7f
 ;     caa82
-;     caa91
 ;     cab3c
 ;     cab4f
 ;     cab73
@@ -5951,8 +5949,6 @@ oscli           = &fff7
 ;     l0de5
 ;     l1800
 ;     l18cd
-;     l18ce
-;     l18cf
 ;     l18d0
 ;     l18d1
 ;     l18d2
