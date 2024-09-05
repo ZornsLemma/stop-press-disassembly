@@ -114,6 +114,7 @@ oscli       = &fff7
     equs "AMX STOP PRESS 1.9    "                                     ; 8009: 41 4d 58... AMX
 .copyright
     equb 0                                                            ; 801f: 00          .
+.l8020
     equs "(C) Tecnation 1984-1987 ", &0d, &0a, 0                      ; 8020: 28 43 29... (C)
 
 .service_handler
@@ -135,8 +136,8 @@ oscli       = &fff7
     txa                                                               ; 8052: 8a          .
 .service_auto_boot_and_help
     pha                                                               ; 8053: 48          H
-    ldx #<title                                                       ; 8054: a2 09       ..
-    ldy #>title                                                       ; 8056: a0 80       ..
+    ldx #<(title)                                                     ; 8054: a2 09       ..
+    ldy #>(title)                                                     ; 8056: a0 80       ..
     jsr print_nul_terminated_string_at_yx                             ; 8058: 20 c5 b7     ..
     pla                                                               ; 805b: 68          h
     pha                                                               ; 805c: 48          H
@@ -148,8 +149,8 @@ oscli       = &fff7
     lda l0daa                                                         ; 8068: ad aa 0d    ...
     cmp #&a5                                                          ; 806b: c9 a5       ..
     beq c8076                                                         ; 806d: f0 07       ..
-    ldx #&9a                                                          ; 806f: a2 9a       ..
-    ldy #&80                                                          ; 8071: a0 80       ..
+    ldx #<(string_nul_809a)                                           ; 806f: a2 9a       ..
+    ldy #>(string_nul_809a)                                           ; 8071: a0 80       ..
     jsr print_nul_terminated_string_at_yx                             ; 8073: 20 c5 b7     ..
 .c8076
     lda #&0d                                                          ; 8076: a9 0d       ..
@@ -164,8 +165,8 @@ oscli       = &fff7
     jmp ply_plx_pla_rts                                               ; 808a: 4c 94 80    L..
 
 .c808d
-    ldx #&20 ; ' '                                                    ; 808d: a2 20       .
-    ldy #&80                                                          ; 808f: a0 80       ..
+    ldx #<(l8020)                                                     ; 808d: a2 20       .
+    ldy #>(l8020)                                                     ; 808f: a0 80       ..
     jsr print_nul_terminated_string_at_yx                             ; 8091: 20 c5 b7     ..
 .ply_plx_pla_rts
     pla                                                               ; 8094: 68          h
@@ -175,9 +176,8 @@ oscli       = &fff7
     pla                                                               ; 8098: 68          h
     rts                                                               ; 8099: 60          `
 
-    equb &20, &2d, &81, &88                                           ; 809a: 20 2d 81...  -.
-    equs "Re-check ROM 2"                                             ; 809e: 52 65 2d... Re-
-    equb 0                                                            ; 80ac: 00          .
+.string_nul_809a
+    equs " -", &81, &88, "Re-check ROM 2", 0                          ; 809a: 20 2d 81...  -.
 
 .service_handler_part_2
     cmp #4                                                            ; 80ad: c9 04       ..
@@ -2176,6 +2176,7 @@ oscli       = &fff7
     equb &b9,   0,   0, &20, &ee, &ff, &b9,   1,   0, &20, &ee, &ff   ; b7b7: b9 00 00... ...
     equb &68, &60                                                     ; b7c3: 68 60       h`
 
+; ***************************************************************************************
 .print_nul_terminated_string_at_yx
     lda l0004                                                         ; b7c5: a5 04       ..
     pha                                                               ; b7c7: 48          H
@@ -2877,6 +2878,7 @@ oscli       = &fff7
 ;     l2601
 ;     l2707
 ;     l2800
+;     l8020
 ;     l8536
 ;     l853e
 ;     lbea9
@@ -2938,15 +2940,19 @@ oscli       = &fff7
     assert <(l0024) == &24
     assert <(l0100) == &00
     assert <(l1921) == &21
+    assert <(l8020) == &20
+    assert <(string_nul_809a) == &9a
     assert <(stringn8535) == &35
     assert <(stringnbf2d) == &2d
-    assert <title == &09
+    assert <(title) == &09
     assert >(l0024) == &00
     assert >(l0100) == &01
     assert >(l1921) == &19
+    assert >(l8020) == &80
+    assert >(string_nul_809a) == &80
     assert >(stringn8535) == &85
     assert >(stringnbf2d) == &bf
-    assert >title == &80
+    assert >(title) == &80
     assert copyright - rom_header == &1f
     assert l853e - l8536 == &08
     assert lbf39 - lbf2e == &0b
