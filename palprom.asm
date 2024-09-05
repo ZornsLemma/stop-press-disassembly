@@ -241,15 +241,22 @@ our_osword_1_x25_handler = &9584
     equw our_osword_1_x25_handler                                     ; 809e: 84 95       ..
     assert P% <= &BFA0
 
-; Bank 1 switching zone - used for XKEYV entry
+; Bank 1 switching zone - used for XKEYV/XEVNTV entry
 org &bfc0
 xkeyv_handler = &a9f9
+xevntv_handler = &b1d1
 .xkeyv_handler_switch
     jmp xkeyv_handler
+.xevntv_handler_switch
+    jmp xevntv_handler
 org &aab7
     lda #<xkeyv_handler_switch
 org &aabc
     lda #>xkeyv_handler_switch
+org &ab1d
+    lda #<xevntv_handler_switch
+org &ab22
+    lda #>xevntv_handler_switch
 
 
 copyblock &8000, &c000, &0000
