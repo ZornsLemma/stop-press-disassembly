@@ -39,6 +39,7 @@ for x in range(26):
     ptr = 0x806c + 2*x
     addr = get_u16_binary(ptr)
     name = "our_osword_1_x%d_handler" % x
+    # print("%s = &%4x" % (name, addr))
     entry(addr, name)
     word(ptr)
     expr(ptr, name)
