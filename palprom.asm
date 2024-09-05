@@ -26,6 +26,10 @@ print_nul_terminated_string_at_yx = &b7c5
 cb76b = &b76b
 l0daa = &0daa
 c808d = &808d
+l0000 = 0
+l0001 = 1
+l0002 = 2
+l0003 = 3
 process_string = &be9f
 .service_handler
     jsr &8060 ; chain to other bank service handler
@@ -110,7 +114,23 @@ process_string = &be9f
     lda (os_text_ptr),y                                               ; 80b3: b1 f2       ..
     cmp process_string,x                                              ; 80b5: dd 9f be    ...
     bne ply_plx_pla_rts                                               ; 80b8: d0 da       ..
-    assert P% == &80ba
+    iny                                                               ; 80ba: c8          .
+    inx                                                               ; 80bb: e8          .
+    cpx #8                                                            ; 80bc: e0 08       ..
+    bne loop_c80b3                                                    ; 80be: d0 f3       ..
+; Copy 10 pages from &8000 to &2600, which just fits in below mode 0 screen RAM at
+; &3000.
+    ;lda #&80                                                          ; 80c0: a9 80       ..
+    lda #&81 ; we need to skip the &80xx switching zoe
+    sta l0001                                                         ; 80c2: 85 01       ..
+    lda #&26 ; '&'                                                    ; 80c4: a9 26       .&
+    sta l0003                                                         ; 80c6: 85 03       ..
+    lda #0                                                            ; 80c8: a9 00       ..
+    sta l0000                                                         ; 80ca: 85 00       ..
+    sta l0002                                                         ; 80cc: 85 02       ..
+    ;ldx #&0a                                                          ; 80ce: a2 0a       ..
+    ldx #9 ; compensate for not copying page &80
+    assert P% == &80d0
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
 
