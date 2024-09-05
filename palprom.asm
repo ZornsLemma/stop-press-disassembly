@@ -25,8 +25,11 @@ print_nul_terminated_string_at_yx = &b7c5
 cb76b = &b76b
 l0daa = &0daa
 c808d = &808d
+rts = &8099
 .service_handler
     jsr &8060 ; chain to other bank service handler
+    cmp #0
+    beq rts
     sta l00f8                                                         ; 803b: 85 f8       ..
     pha                                                               ; 803d: 48          H
     txa                                                               ; 803e: 8a          .
@@ -48,18 +51,18 @@ c808d = &808d
 ;    pha                                                               ; 8053: 48          H
     ldx #<title                                                       ; 8054: a2 09       ..
     ldy #>title                                                       ; 8056: a0 80       ..
-    jsr print_nul_terminated_string_at_yx                             ; 8058: 20 c5 b7     ..
-;    pla                                                               ; 805b: 68          h
-;    pha                                                               ; 805c: 48          H
-;    cmp #3                                                            ; 805d: c9 03       ..
-;    beq c8076                                                         ; 805f: f0 15       ..
-     jmp skip_8060
+    jmp skip_8060
     assert P% <= &8060
     skipto &8060
     ; This code won't be used normally, but having this here might help testing. I think it means we can use this variant on ROM 1 in place of the original along with the original ROM 2, in order to test the new service handler is basically sound.
     rts
     skipto &8070
 .skip_8060
+    jsr print_nul_terminated_string_at_yx                             ; 8058: 20 c5 b7     ..
+;    pla                                                               ; 805b: 68          h
+;    pha                                                               ; 805c: 48          H
+;    cmp #3                                                            ; 805d: c9 03       ..
+;    beq c8076                                                         ; 805f: f0 15       ..
     ldx #0                                                            ; 8061: a2 00       ..
     ldy #&5a ; 'Z'                                                    ; 8063: a0 5a       .Z
     jsr cb76b                                                         ; 8065: 20 6b b7     k.
@@ -81,8 +84,9 @@ c808d = &808d
 ;    lda #&0a                                                          ; 8085: a9 0a       ..
 ;    jsr oswrch                                                        ; 8087: 20 ee ff     ..            ; Write character 10
 ;    jmp ply_plx_pla_rts                                               ; 808a: 4c 94 80    L..
-    jmp c808d
-    assert P% <= c808d
+     ;jmp c808d
+     nop:nop
+    assert P% == c808d
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
 
