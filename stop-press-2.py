@@ -59,9 +59,14 @@ expr(0xa90c, make_lo("command_done - 1"))
 
 ptr = 0xa943
 while get_u8_binary(ptr) != 0:
+    i = 0
+    name = ""
+    while get_u8_binary(ptr + i) != 0:
+        name += chr(get_u8_binary(ptr + i))
+        i += 1
     ptr = stringz(ptr)
     handler = get_u16_binary(ptr) + 1
-    expr(ptr, make_subtract(entry(handler), 1))
+    expr(ptr, make_subtract(entry(handler, "command_p" + name), 1))
     word(ptr)
     ptr += 2
 

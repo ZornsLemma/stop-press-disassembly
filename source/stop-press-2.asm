@@ -3893,32 +3893,32 @@ oscli           = &fff7
 ; The 'p' prefix is checked separately.
 .command_table
     equs "DF", 0                                                      ; a943: 44 46 00    DF.
-    equw (loop_ca97f) - 1                                             ; a946: 7e a9       ~.
+    equw command_pDF - 1                                              ; a946: 7e a9       ~.
     equs "DE", 0                                                      ; a948: 44 45 00    DE.
-    equw (sub_ca9c7) - 1                                              ; a94b: c6 a9       ..
+    equw command_pDE - 1                                              ; a94b: c6 a9       ..
     equs "MOUSE", 0                                                   ; a94d: 4d 4f 55... MOU
-    equw (sub_caad2) - 1                                              ; a953: d1 aa       ..
+    equw command_pMOUSE - 1                                           ; a953: d1 aa       ..
     equs "MP", 0                                                      ; a955: 4d 50 00    MP.
-    equw (sub_cabab) - 1                                              ; a958: aa ab       ..
+    equw command_pMP - 1                                              ; a958: aa ab       ..
     equs "SP", 0                                                      ; a95a: 53 50 00    SP.
-    equw (sub_cabc9) - 1                                              ; a95d: c8 ab       ..
+    equw command_pSP - 1                                              ; a95d: c8 ab       ..
     equs "HP", 0                                                      ; a95f: 48 50 00    HP.
-    equw (sub_cab74) - 1                                              ; a962: 73 ab       s.
+    equw command_pHP - 1                                              ; a962: 73 ab       s.
     equs "SE", 0                                                      ; a964: 53 45 00    SE.
-    equw (sub_cadf1) - 1                                              ; a967: f0 ad       ..
+    equw command_pSE - 1                                              ; a967: f0 ad       ..
     equs "IC", 0                                                      ; a969: 49 43 00    IC.
-    equw (loop_cae1a) - 1                                             ; a96c: 19 ae       ..
+    equw command_pIC - 1                                              ; a96c: 19 ae       ..
     equs "WI", 0                                                      ; a96e: 57 49 00    WI.
-    equw (sub_caef8) - 1                                              ; a971: f7 ae       ..
+    equw command_pWI - 1                                              ; a971: f7 ae       ..
     equs "JOYSTICK", 0                                                ; a973: 4a 4f 59... JOY
-    equw (sub_cb14c) - 1                                              ; a97c: 4b b1       K.
+    equw command_pJOYSTICK - 1                                        ; a97c: 4b b1       K.
     equb 0                                                            ; a97e: 00          .
 
-.loop_ca97f
+.command_pDF
     lda (os_text_ptr),y                                               ; a97f: b1 f2       ..
     iny                                                               ; a981: c8          .
     cmp #&20 ; ' '                                                    ; a982: c9 20       .
-    bne loop_ca97f                                                    ; a984: d0 f9       ..
+    bne command_pDF                                                   ; a984: d0 f9       ..
     tya                                                               ; a986: 98          .
     clc                                                               ; a987: 18          .
     adc os_text_ptr                                                   ; a988: 65 f2       e.
@@ -3957,7 +3957,7 @@ oscli           = &fff7
     jsr osfind                                                        ; a9c3: 20 ce ff     ..            ; Close one or all files
     rts                                                               ; a9c6: 60          `
 
-.sub_ca9c7
+.command_pDE
     ldx #0                                                            ; a9c7: a2 00       ..
 .loop_ca9c9
     lda la9ed,x                                                       ; a9c9: bd ed a9    ...
@@ -4031,7 +4031,7 @@ oscli           = &fff7
     cli                                                               ; aad0: 58          X
     rts                                                               ; aad1: 60          `
 
-.sub_caad2
+.command_pMOUSE
     lda #1                                                            ; aad2: a9 01       ..
     sta l18cd                                                         ; aad4: 8d cd 18    ...
     lda #2                                                            ; aad7: a9 02       ..
@@ -4115,7 +4115,7 @@ oscli           = &fff7
 .cab73
     rts                                                               ; ab73: 60          `
 
-.sub_cab74
+.command_pHP
     jsr sub_cab78                                                     ; ab74: 20 78 ab     x.
     rts                                                               ; ab77: 60          `
 
@@ -4148,7 +4148,7 @@ oscli           = &fff7
 .cabaa
     rts                                                               ; abaa: 60          `
 
-.sub_cabab
+.command_pMP
     lda l18de                                                         ; abab: ad de 18    ...
     beq cabc1                                                         ; abae: f0 11       ..
     lda l0da6                                                         ; abb0: ad a6 0d    ...
@@ -4163,7 +4163,7 @@ oscli           = &fff7
     lda #osbyte_vsync                                                 ; abc1: a9 13       ..
     jsr osbyte                                                        ; abc3: 20 f4 ff     ..            ; Wait for vertical sync
     jsr sub_cab78                                                     ; abc6: 20 78 ab     x.
-.sub_cabc9
+.command_pSP
     lda l0da6                                                         ; abc9: ad a6 0d    ...
     sta l18d0                                                         ; abcc: 8d d0 18    ...
     sta l18dc                                                         ; abcf: 8d dc 18    ...
@@ -4375,7 +4375,7 @@ oscli           = &fff7
     equb &0d, &18, &90, &0a, &ad, &a8, &0d, &38, &ed, &df, &18, &8d   ; addd: 0d 18 90... ...
     equb &a8, &0d, &68, &aa, &a5, &fc, &40, &24                       ; ade9: a8 0d 68... ..h
 
-.sub_cadf1
+.command_pSE
     jsr cb143                                                         ; adf1: 20 43 b1     C.
     lda (os_text_ptr),y                                               ; adf4: b1 f2       ..
     and #7                                                            ; adf6: 29 07       ).
@@ -4400,11 +4400,11 @@ oscli           = &fff7
     sta l0da8                                                         ; ae16: 8d a8 0d    ...
     rts                                                               ; ae19: 60          `
 
-.loop_cae1a
+.command_pIC
     lda (os_text_ptr),y                                               ; ae1a: b1 f2       ..
     iny                                                               ; ae1c: c8          .
     cmp #&20 ; ' '                                                    ; ae1d: c9 20       .
-    beq loop_cae1a                                                    ; ae1f: f0 f9       ..
+    beq command_pIC                                                   ; ae1f: f0 f9       ..
     dey                                                               ; ae21: 88          .
     jsr sub_caec7                                                     ; ae22: 20 c7 ae     ..
     lda (os_text_ptr),y                                               ; ae25: b1 f2       ..
@@ -4514,7 +4514,7 @@ oscli           = &fff7
     lda l18d6                                                         ; aef4: ad d6 18    ...
     rts                                                               ; aef7: 60          `
 
-.sub_caef8
+.command_pWI
     lda #&12                                                          ; aef8: a9 12       ..
     jsr oswrch                                                        ; aefa: 20 ee ff     ..            ; Write character 18
     lda #0                                                            ; aefd: a9 00       ..
@@ -4768,7 +4768,7 @@ oscli           = &fff7
     dey                                                               ; b14a: 88          .
     rts                                                               ; b14b: 60          `
 
-.sub_cb14c
+.command_pJOYSTICK
     lda #2                                                            ; b14c: a9 02       ..
     sta l18cd                                                         ; b14e: 8d cd 18    ...
     jsr sub_caa95                                                     ; b151: 20 95 aa     ..
@@ -5850,7 +5850,6 @@ oscli           = &fff7
 ;     loop_ca895
 ;     loop_ca8b9
 ;     loop_ca8d3
-;     loop_ca97f
 ;     loop_ca9a6
 ;     loop_ca9c9
 ;     loop_caaee
@@ -5858,7 +5857,6 @@ oscli           = &fff7
 ;     loop_cac0c
 ;     loop_cacf7
 ;     loop_cae01
-;     loop_cae1a
 ;     loop_cae5b
 ;     loop_cae70
 ;     loop_cae7d
@@ -5895,36 +5893,18 @@ oscli           = &fff7
 ;     sub_c9526
 ;     sub_c953a
 ;     sub_c954a
-;     sub_ca9c7
 ;     sub_caa95
-;     sub_caad2
-;     sub_cab74
 ;     sub_cab78
-;     sub_cabab
-;     sub_cabc9
 ;     sub_cac56
 ;     sub_cad02
-;     sub_cadf1
 ;     sub_caec7
-;     sub_caef8
 ;     sub_cb0d0
 ;     sub_cb0fe
 ;     sub_cb136
-;     sub_cb14c
 ;     sub_cb155
     assert (255 - inkey_key_f0) EOR 128 == &a0
     assert (255 - inkey_key_f1) EOR 128 == &f1
     assert (255 - inkey_key_f2) EOR 128 == &f2
-    assert (loop_ca97f) - 1 == &a97e
-    assert (loop_cae1a) - 1 == &ae19
-    assert (sub_ca9c7) - 1 == &a9c6
-    assert (sub_caad2) - 1 == &aad1
-    assert (sub_cab74) - 1 == &ab73
-    assert (sub_cabab) - 1 == &abaa
-    assert (sub_cabc9) - 1 == &abc8
-    assert (sub_cadf1) - 1 == &adf0
-    assert (sub_caef8) - 1 == &aef7
-    assert (sub_cb14c) - 1 == &b14b
     assert <(command_done - 1) == &20
     assert <(l0024) == &24
     assert <(l0100) == &00
@@ -5941,6 +5921,16 @@ oscli           = &fff7
     assert >(l1921) == &19
     assert >(l192d) == &19
     assert >our_osword_1_x_handler_table == &80
+    assert command_pDE - 1 == &a9c6
+    assert command_pDF - 1 == &a97e
+    assert command_pHP - 1 == &ab73
+    assert command_pIC - 1 == &ae19
+    assert command_pJOYSTICK - 1 == &b14b
+    assert command_pMOUSE - 1 == &aad1
+    assert command_pMP - 1 == &abaa
+    assert command_pSE - 1 == &adf0
+    assert command_pSP - 1 == &abc8
+    assert command_pWI - 1 == &aef7
     assert copyright - rom_header == &24
     assert event_start_of_vertical_sync == &04
     assert event_user == &09
