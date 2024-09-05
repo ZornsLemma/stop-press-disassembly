@@ -67,5 +67,13 @@ entry(0x84f6, "jmp_indirect_l191c")
 label(0xbecc, "jump_table")
 expr_label(0xbecd, "jump_table + 1")
 expr_label(0xbece, "jump_table + 2")
+for i in range(11): # TODO?
+    ptr = 0xbecc + i*3
+    byte(ptr) # TODO: what is this?
+    addr = get_u16_be_binary(ptr + 1)
+    byte(ptr + 1, 2)
+    name = entry(addr)
+    expr(ptr + 1, make_hi(name))
+    expr(ptr + 2, make_lo(name))
 
 go()
