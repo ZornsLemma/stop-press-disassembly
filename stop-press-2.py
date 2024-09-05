@@ -79,4 +79,10 @@ entry(0xa9f9, "xkeyv_handler")
 expr(0xaab8, make_lo("xkeyv_handler"))
 expr(0xaabd, make_hi("xkeyv_handler"))
 
+constant(0x30, "xevntv_offset")
+expr(0xaafd, "xevntv_offset")
+entry(0xb1d1, "xevntv_handler")
+expr(0xab1e, make_lo("xevntv_handler"))
+expr(0xab23, make_hi("xevntv_handler"))
+
 go()

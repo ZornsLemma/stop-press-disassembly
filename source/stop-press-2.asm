@@ -1,9 +1,14 @@
 ; Constants
 event_start_of_vertical_sync           = 4
 event_user                             = 9
+inkey_key_down                         = 214
 inkey_key_f0                           = 223
 inkey_key_f1                           = 142
 inkey_key_f2                           = 141
+inkey_key_left                         = 230
+inkey_key_right                        = 134
+inkey_key_shift                        = 255
+inkey_key_up                           = 198
 osbyte_disable_event                   = 13
 osbyte_enable_event                    = 14
 osbyte_read_adc_or_get_buffer_status   = 128
@@ -18,6 +23,7 @@ osgbpb_read_file_names                 = 8
 osword_read_pixel                      = 9
 our_osword1                            = 53
 our_osword2                            = 54
+xevntv_offset                          = 48
 xkeyv_offset                           = 60
 
 ; Memory locations
@@ -4149,7 +4155,7 @@ oscli           = &fff7
     tax                                                               ; aaf8: aa          .
     dex                                                               ; aaf9: ca          .
     bpl loop_caaee                                                    ; aafa: 10 f2       ..
-    lda #&30 ; '0'                                                    ; aafc: a9 30       .0
+    lda #xevntv_offset                                                ; aafc: a9 30       .0
     sta evntv                                                         ; aafe: 8d 20 02    . .
     lda #&ff                                                          ; ab01: a9 ff       ..
     sta evntv+1                                                       ; ab03: 8d 21 02    .!.
@@ -4166,10 +4172,10 @@ oscli           = &fff7
     adc #0                                                            ; ab17: 69 00       i.
     sta l00f9                                                         ; ab19: 85 f9       ..
     ldy #0                                                            ; ab1b: a0 00       ..
-    lda #&d1                                                          ; ab1d: a9 d1       ..
+    lda #<xevntv_handler                                              ; ab1d: a9 d1       ..
     sta (l00f8),y                                                     ; ab1f: 91 f8       ..
     iny                                                               ; ab21: c8          .
-    lda #&b1                                                          ; ab22: a9 b1       ..
+    lda #>xevntv_handler                                              ; ab22: a9 b1       ..
     sta (l00f8),y                                                     ; ab24: 91 f8       ..
     iny                                                               ; ab26: c8          .
     lda romsel_copy                                                   ; ab27: a5 f4       ..
@@ -4933,30 +4939,157 @@ oscli           = &fff7
     pla                                                               ; b1cf: 68          h
     rts                                                               ; b1d0: 60          `
 
-    equb   8, &48, &8a, &48, &98, &48, &a5, &ef, &48, &a5, &f0, &48   ; b1d1: 08 48 8a... .H.
-    equb &a5, &f1, &48, &a9, &79, &a2, &80, &20, &f4, &ff, &8a, &48   ; b1dd: a5 f1 48... ..H
-    equb &e0,   0, &10, &22, &0e, &df, &18, &0e, &df, &18, &ad, &df   ; b1e9: e0 00 10... ...
-    equb &18, &a2,   0, &e8, &0a, &90, &fc, &38, &6a, &ca, &d0, &fb   ; b1f5: 18 a2 00... ...
-    equb &48, &2d, &a6, &0d, &8d, &a6, &0d, &68, &2d, &a8, &0d, &8d   ; b201: 48 2d a6... H-.
-    equb &a8, &0d, &a9, &79, &a2, &f9, &20, &f4, &ff, &e0,   0, &10   ; b20d: a8 0d a9... ...
-    equb &38, &ad, &a6, &0d, &18, &6d, &df, &18, &8d, &a6, &0d, &90   ; b219: 38 ad a6... 8..
-    equb   3, &ee, &a7, &0d, &ad, &a7, &0d, &c9,   4, &d0, &1f, &ad   ; b225: 03 ee a7... ...
-    equb &55,   3, &c9,   4, &d0, &0c, &ad, &a6, &0d, &29, &e0, &c9   ; b231: 55 03 c9... U..
-    equb &e0, &d0, &0f, &8d, &a6, &0d, &ad, &a6, &0d, &29, &f0, &c9   ; b23d: e0 d0 0f... ...
-    equb &f0, &d0,   3, &8d, &a6, &0d, &4c, &7c, &b2, &a9, &79, &a2   ; b249: f0 d0 03... ...
-    equb &99, &20, &f4, &ff, &e0,   0, &10, &1f, &ad, &a6, &0d, &d0   ; b255: 99 20 f4... . .
-    equb &10, &ce, &a7, &0d, &10, &0b, &a9,   0, &8d, &a7, &0d, &8d   ; b261: 10 ce a7... ...
-    equb &a6, &0d, &4c, &7c, &b2, &ad, &a6, &0d, &38, &ed, &df, &18   ; b26d: a6 0d 4c... ..L
-    equb &8d, &a6, &0d, &a9, &79, &a2, &b9, &20, &f4, &ff, &e0,   0   ; b279: 8d a6 0d... ...
-    equb &10, &19, &ad, &a8, &0d, &18, &6d, &df, &18, &8d, &a8, &0d   ; b285: 10 19 ad... ...
-    equb &90, &0a, &ee, &a9, &0d, &ad, &a9, &0d, &c9,   4, &f0, &0e   ; b291: 90 0a ee... ...
-    equb &4c, &ca, &b2, &a9, &79, &a2, &a9, &20, &f4, &ff, &e0,   0   ; b29d: 4c ca b2... L..
-    equb &10, &1f, &ad, &a8, &0d, &d0, &10, &ce, &a9, &0d, &10, &0b   ; b2a9: 10 1f ad... ...
-    equb &a9,   0, &8d, &a9, &0d, &8d, &a8, &0d, &18, &90, &0a, &ad   ; b2b5: a9 00 8d... ...
-    equb &a8, &0d, &38, &ed, &df, &18, &8d, &a8, &0d, &68, &10,   6   ; b2c1: a8 0d 38... ..8
-    equb &4e, &df, &18, &4e, &df, &18, &68, &85, &f1, &68, &85, &f0   ; b2cd: 4e df 18... N..
-    equb &68, &85, &ef, &68, &a8, &68, &aa                            ; b2d9: 68 85 ef... h..
-    equs "h(`"                                                        ; b2e0: 68 28 60    h(`
+.xevntv_handler
+    php                                                               ; b1d1: 08          .
+    pha                                                               ; b1d2: 48          H
+    txa                                                               ; b1d3: 8a          .
+    pha                                                               ; b1d4: 48          H
+    tya                                                               ; b1d5: 98          .
+    pha                                                               ; b1d6: 48          H
+    lda osbyte_osword_a                                               ; b1d7: a5 ef       ..
+    pha                                                               ; b1d9: 48          H
+    lda osbyte_osword_x                                               ; b1da: a5 f0       ..
+    pha                                                               ; b1dc: 48          H
+    lda osbyte_osword_y                                               ; b1dd: a5 f1       ..
+    pha                                                               ; b1df: 48          H
+    lda #osbyte_scan_keyboard                                         ; b1e0: a9 79       .y
+    ldx #(255 - inkey_key_shift) EOR 128                              ; b1e2: a2 80       ..             ; X=internal key number EOR 128
+    jsr osbyte                                                        ; b1e4: 20 f4 ff     ..            ; Test for 'SHIFT' key pressed (X=128)
+    txa                                                               ; b1e7: 8a          .              ; X has top bit set if 'SHIFT' pressed
+    pha                                                               ; b1e8: 48          H
+    cpx #0                                                            ; b1e9: e0 00       ..
+    bpl cb20f                                                         ; b1eb: 10 22       ."
+    asl l18df                                                         ; b1ed: 0e df 18    ...
+    asl l18df                                                         ; b1f0: 0e df 18    ...
+    lda l18df                                                         ; b1f3: ad df 18    ...
+    ldx #0                                                            ; b1f6: a2 00       ..
+.loop_cb1f8
+    inx                                                               ; b1f8: e8          .
+    asl a                                                             ; b1f9: 0a          .
+    bcc loop_cb1f8                                                    ; b1fa: 90 fc       ..
+.loop_cb1fc
+    sec                                                               ; b1fc: 38          8
+    ror a                                                             ; b1fd: 6a          j
+    dex                                                               ; b1fe: ca          .
+    bne loop_cb1fc                                                    ; b1ff: d0 fb       ..
+    pha                                                               ; b201: 48          H
+    and l0da6                                                         ; b202: 2d a6 0d    -..
+    sta l0da6                                                         ; b205: 8d a6 0d    ...
+    pla                                                               ; b208: 68          h
+    and l0da8                                                         ; b209: 2d a8 0d    -..
+    sta l0da8                                                         ; b20c: 8d a8 0d    ...
+.cb20f
+    lda #osbyte_scan_keyboard                                         ; b20f: a9 79       .y
+    ldx #(255 - inkey_key_right) EOR 128                              ; b211: a2 f9       ..             ; X=internal key number EOR 128
+    jsr osbyte                                                        ; b213: 20 f4 ff     ..            ; Test for 'RIGHT' key pressed (X=249)
+    cpx #0                                                            ; b216: e0 00       ..             ; X has top bit set if 'RIGHT' pressed
+    bpl cb252                                                         ; b218: 10 38       .8
+    lda l0da6                                                         ; b21a: ad a6 0d    ...
+    clc                                                               ; b21d: 18          .
+    adc l18df                                                         ; b21e: 6d df 18    m..
+    sta l0da6                                                         ; b221: 8d a6 0d    ...
+    bcc cb229                                                         ; b224: 90 03       ..
+    inc l0da7                                                         ; b226: ee a7 0d    ...
+.cb229
+    lda l0da7                                                         ; b229: ad a7 0d    ...
+    cmp #4                                                            ; b22c: c9 04       ..
+    bne cb24f                                                         ; b22e: d0 1f       ..
+    lda l0355                                                         ; b230: ad 55 03    .U.
+    cmp #4                                                            ; b233: c9 04       ..
+    bne cb243                                                         ; b235: d0 0c       ..
+    lda l0da6                                                         ; b237: ad a6 0d    ...
+    and #&e0                                                          ; b23a: 29 e0       ).
+    cmp #&e0                                                          ; b23c: c9 e0       ..
+    bne cb24f                                                         ; b23e: d0 0f       ..
+    sta l0da6                                                         ; b240: 8d a6 0d    ...
+.cb243
+    lda l0da6                                                         ; b243: ad a6 0d    ...
+    and #&f0                                                          ; b246: 29 f0       ).
+    cmp #&f0                                                          ; b248: c9 f0       ..
+    bne cb24f                                                         ; b24a: d0 03       ..
+    sta l0da6                                                         ; b24c: 8d a6 0d    ...
+.cb24f
+    jmp cb27c                                                         ; b24f: 4c 7c b2    L|.
+
+.cb252
+    lda #osbyte_scan_keyboard                                         ; b252: a9 79       .y
+    ldx #(255 - inkey_key_left) EOR 128                               ; b254: a2 99       ..             ; X=internal key number EOR 128
+    jsr osbyte                                                        ; b256: 20 f4 ff     ..            ; Test for 'LEFT' key pressed (X=153)
+    cpx #0                                                            ; b259: e0 00       ..             ; X has top bit set if 'LEFT' pressed
+    bpl cb27c                                                         ; b25b: 10 1f       ..
+    lda l0da6                                                         ; b25d: ad a6 0d    ...
+    bne cb272                                                         ; b260: d0 10       ..
+    dec l0da7                                                         ; b262: ce a7 0d    ...
+    bpl cb272                                                         ; b265: 10 0b       ..
+    lda #0                                                            ; b267: a9 00       ..
+    sta l0da7                                                         ; b269: 8d a7 0d    ...
+    sta l0da6                                                         ; b26c: 8d a6 0d    ...
+    jmp cb27c                                                         ; b26f: 4c 7c b2    L|.
+
+.cb272
+    lda l0da6                                                         ; b272: ad a6 0d    ...
+    sec                                                               ; b275: 38          8
+    sbc l18df                                                         ; b276: ed df 18    ...
+    sta l0da6                                                         ; b279: 8d a6 0d    ...
+.cb27c
+    lda #osbyte_scan_keyboard                                         ; b27c: a9 79       .y
+    ldx #(255 - inkey_key_up) EOR 128                                 ; b27e: a2 b9       ..             ; X=internal key number EOR 128
+    jsr osbyte                                                        ; b280: 20 f4 ff     ..            ; Test for 'UP' key pressed (X=185)
+    cpx #0                                                            ; b283: e0 00       ..             ; X has top bit set if 'UP' pressed
+    bpl cb2a0                                                         ; b285: 10 19       ..
+    lda l0da8                                                         ; b287: ad a8 0d    ...
+    clc                                                               ; b28a: 18          .
+    adc l18df                                                         ; b28b: 6d df 18    m..
+    sta l0da8                                                         ; b28e: 8d a8 0d    ...
+    bcc cb29d                                                         ; b291: 90 0a       ..
+    inc l0da9                                                         ; b293: ee a9 0d    ...
+    lda l0da9                                                         ; b296: ad a9 0d    ...
+    cmp #4                                                            ; b299: c9 04       ..
+    beq cb2ab                                                         ; b29b: f0 0e       ..
+.cb29d
+    jmp cb2ca                                                         ; b29d: 4c ca b2    L..
+
+.cb2a0
+    lda #osbyte_scan_keyboard                                         ; b2a0: a9 79       .y
+    ldx #(255 - inkey_key_down) EOR 128                               ; b2a2: a2 a9       ..             ; X=internal key number EOR 128
+    jsr osbyte                                                        ; b2a4: 20 f4 ff     ..            ; Test for 'DOWN' key pressed (X=169)
+    cpx #0                                                            ; b2a7: e0 00       ..             ; X has top bit set if 'DOWN' pressed
+    bpl cb2ca                                                         ; b2a9: 10 1f       ..
+.cb2ab
+    lda l0da8                                                         ; b2ab: ad a8 0d    ...
+    bne cb2c0                                                         ; b2ae: d0 10       ..
+    dec l0da9                                                         ; b2b0: ce a9 0d    ...
+    bpl cb2c0                                                         ; b2b3: 10 0b       ..
+    lda #0                                                            ; b2b5: a9 00       ..
+    sta l0da9                                                         ; b2b7: 8d a9 0d    ...
+    sta l0da8                                                         ; b2ba: 8d a8 0d    ...
+    clc                                                               ; b2bd: 18          .
+    bcc cb2ca                                                         ; b2be: 90 0a       ..
+.cb2c0
+    lda l0da8                                                         ; b2c0: ad a8 0d    ...
+    sec                                                               ; b2c3: 38          8
+    sbc l18df                                                         ; b2c4: ed df 18    ...
+    sta l0da8                                                         ; b2c7: 8d a8 0d    ...
+.cb2ca
+    pla                                                               ; b2ca: 68          h
+    bpl cb2d3                                                         ; b2cb: 10 06       ..
+    lsr l18df                                                         ; b2cd: 4e df 18    N..
+    lsr l18df                                                         ; b2d0: 4e df 18    N..
+.cb2d3
+    pla                                                               ; b2d3: 68          h
+    sta osbyte_osword_y                                               ; b2d4: 85 f1       ..
+    pla                                                               ; b2d6: 68          h
+    sta osbyte_osword_x                                               ; b2d7: 85 f0       ..
+    pla                                                               ; b2d9: 68          h
+    sta osbyte_osword_a                                               ; b2da: 85 ef       ..
+    pla                                                               ; b2dc: 68          h
+    tay                                                               ; b2dd: a8          .
+    pla                                                               ; b2de: 68          h
+    tax                                                               ; b2df: aa          .
+    pla                                                               ; b2e0: 68          h
+    plp                                                               ; b2e1: 28          (
+    rts                                                               ; b2e2: 60          `
+
 .lb2e3
     equb 0                                                            ; b2e3: 00          .
     equs "@`px|~xhH"                                                  ; b2e4: 40 60 70... @`p
@@ -5721,6 +5854,19 @@ oscli           = &fff7
 ;     cb0fd
 ;     cb143
 ;     cb1c0
+;     cb20f
+;     cb229
+;     cb243
+;     cb24f
+;     cb252
+;     cb272
+;     cb27c
+;     cb29d
+;     cb2a0
+;     cb2ab
+;     cb2c0
+;     cb2ca
+;     cb2d3
 ;     l0000
 ;     l0001
 ;     l0002
@@ -5969,6 +6115,8 @@ oscli           = &fff7
 ;     loop_cae7d
 ;     loop_cb176
 ;     loop_cb1c2
+;     loop_cb1f8
+;     loop_cb1fc
 ;     sub_c8336
 ;     sub_c8351
 ;     sub_c8373
@@ -6009,9 +6157,14 @@ oscli           = &fff7
 ;     sub_cb0fe
 ;     sub_cb136
 ;     sub_cb155
+    assert (255 - inkey_key_down) EOR 128 == &a9
     assert (255 - inkey_key_f0) EOR 128 == &a0
     assert (255 - inkey_key_f1) EOR 128 == &f1
     assert (255 - inkey_key_f2) EOR 128 == &f2
+    assert (255 - inkey_key_left) EOR 128 == &99
+    assert (255 - inkey_key_right) EOR 128 == &f9
+    assert (255 - inkey_key_shift) EOR 128 == &80
+    assert (255 - inkey_key_up) EOR 128 == &b9
     assert <(command_done - 1) == &20
     assert <(l0024) == &24
     assert <(l0100) == &00
@@ -6020,6 +6173,7 @@ oscli           = &fff7
     assert <(l1921) == &21
     assert <(l192d) == &2d
     assert <our_osword_1_x_handler_table == &6c
+    assert <xevntv_handler == &d1
     assert <xkeyv_handler == &f9
     assert >(command_done - 1) == &a9
     assert >(l0024) == &00
@@ -6029,6 +6183,7 @@ oscli           = &fff7
     assert >(l1921) == &19
     assert >(l192d) == &19
     assert >our_osword_1_x_handler_table == &80
+    assert >xevntv_handler == &b1
     assert >xkeyv_handler == &a9
     assert command_pDE - 1 == &a9c6
     assert command_pDF - 1 == &a97e
@@ -6083,6 +6238,7 @@ oscli           = &fff7
     assert our_osword_1_x7_handler == &82e7
     assert our_osword_1_x8_handler == &8392
     assert our_osword_1_x9_handler == &8264
+    assert xevntv_offset == &30
     assert xkeyv_offset == &3c
 
 save pydis_start, pydis_end
