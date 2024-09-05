@@ -85,4 +85,6 @@ entry(0xb1d1, "xevntv_handler")
 expr(0xab1e, make_lo("xevntv_handler"))
 expr(0xab23, make_hi("xevntv_handler"))
 
+entry(0xb143, "skip_at_least_one_space_at_os_text_ptr")
+
 go()

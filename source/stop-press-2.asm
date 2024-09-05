@@ -4478,7 +4478,7 @@ oscli           = &fff7
     equb &a8, &0d, &68, &aa, &a5, &fc, &40, &24                       ; ade9: a8 0d 68... ..h
 
 .command_pSE
-    jsr cb143                                                         ; adf1: 20 43 b1     C.
+    jsr skip_at_least_one_space_at_os_text_ptr                        ; adf1: 20 43 b1     C.
     lda (os_text_ptr),y                                               ; adf4: b1 f2       ..
     and #7                                                            ; adf6: 29 07       ).
     tax                                                               ; adf8: aa          .
@@ -4625,7 +4625,7 @@ oscli           = &fff7
     jsr oswrch                                                        ; af04: 20 ee ff     ..            ; Write character 7
     lda #&1c                                                          ; af07: a9 1c       ..
     jsr oswrch                                                        ; af09: 20 ee ff     ..            ; Write character 28
-    jsr cb143                                                         ; af0c: 20 43 b1     C.
+    jsr skip_at_least_one_space_at_os_text_ptr                        ; af0c: 20 43 b1     C.
     jsr sub_caec7                                                     ; af0f: 20 c7 ae     ..
     sta l18d8                                                         ; af12: 8d d8 18    ...
     jsr oswrch                                                        ; af15: 20 ee ff     ..            ; Write character
@@ -4862,11 +4862,11 @@ oscli           = &fff7
     jsr oswrch                                                        ; b13f: 20 ee ff     ..            ; Write character
     rts                                                               ; b142: 60          `
 
-.cb143
+.skip_at_least_one_space_at_os_text_ptr
     lda (os_text_ptr),y                                               ; b143: b1 f2       ..
     iny                                                               ; b145: c8          .
     cmp #&20 ; ' '                                                    ; b146: c9 20       .
-    beq cb143                                                         ; b148: f0 f9       ..
+    beq skip_at_least_one_space_at_os_text_ptr                        ; b148: f0 f9       ..
     dey                                                               ; b14a: 88          .
     rts                                                               ; b14b: 60          `
 
@@ -5852,7 +5852,6 @@ oscli           = &fff7
 ;     caef4
 ;     caf47
 ;     cb0fd
-;     cb143
 ;     cb1c0
 ;     cb20f
 ;     cb229
