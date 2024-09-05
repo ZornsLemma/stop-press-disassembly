@@ -23,6 +23,7 @@ cb76b = &b76b
 l0daa = &0daa
 c808d = &808d
 .service_handler
+    jsr &8060 ; chain to other bank service handler
     sta l00f8                                                         ; 803b: 85 f8       ..
     pha                                                               ; 803d: 48          H
     txa                                                               ; 803e: 8a          .
@@ -35,10 +36,11 @@ c808d = &808d
     cmp #9                                                            ; 8048: c9 09       ..
     bne service_handler_part_2                                        ; 804a: d0 61       .a
 .service_help
-    tax                                                               ; 804c: aa          .
-    lda #&0a                                                          ; 804d: a9 0a       ..
-    jsr oswrch                                                        ; 804f: 20 ee ff     ..            ; Write character 10
-    txa                                                               ; 8052: 8a          .
+;    tax                                                               ; 804c: aa          .
+;    lda #&0a                                                          ; 804d: a9 0a       ..
+;    jsr oswrch                                                        ; 804f: 20 ee ff     ..            ; Write character 10
+;    txa                                                               ; 8052: 8a          .
+    jsr osnewl
 ;.service_auto_boot
 ;    pha                                                               ; 8053: 48          H
     ldx #<title                                                       ; 8054: a2 09       ..
@@ -48,11 +50,14 @@ c808d = &808d
 ;    pha                                                               ; 805c: 48          H
 ;    cmp #3                                                            ; 805d: c9 03       ..
 ;    beq c8076                                                         ; 805f: f0 15       ..
-     ldx #0                                                            ; 8061: a2 00       ..
      jmp skip_8060
     assert P% <= &8060
+    skipto &8060
+    ; This code won't be used normally, but having this here might help testing.
+    rts
     skipto &8070
 .skip_8060
+    ldx #0                                                            ; 8061: a2 00       ..
     ldy #&5a ; 'Z'                                                    ; 8063: a0 5a       .Z
     jsr cb76b                                                         ; 8065: 20 6b b7     k.
     lda l0daa                                                         ; 8068: ad aa 0d    ...
@@ -77,6 +82,8 @@ c808d = &808d
     assert P% <= c808d
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
+
+; TODO: WE NEED TO CHAIN THE TWO SERVICE HANDLERS TOGETHER!
 
 copyblock &8000, &c000, &4000
 clear &8000, &c000

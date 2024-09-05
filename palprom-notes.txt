@@ -12,5 +12,4 @@ ROM 1 == bank 1
 ROM 2 == bank 0
 CHANGE: ROM 2's service handler needs to move away from 804x
 
-ROM 1 has possibly-dead code from &8061-&806F and if it is dead we could trivially patch the cmp #/beq which just overlaps into &8060 to avoid touching the 806x switch point by accident.
 CHANGE: ROM 1's code needs simple patching to avoid 806x
