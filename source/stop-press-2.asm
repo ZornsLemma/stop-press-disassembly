@@ -93,6 +93,7 @@ l0da7           = &0da7
 l0da8           = &0da8
 l0da9           = &0da9
 l0daa           = &0daa
+xkeyv           = &0ddb
 l18cd           = &18cd
 l18d6           = &18d6
 l1911           = &1911
@@ -3792,22 +3793,22 @@ oscli           = &fff7
     tya                                                               ; a8f5: 98          .
     pha                                                               ; a8f6: 48          H
     ldx #0                                                            ; a8f7: a2 00       ..
-.ca8f9
+.check_next_command
     lda (os_text_ptr),y                                               ; a8f9: b1 f2       ..
-    cmp la943,x                                                       ; a8fb: dd 43 a9    .C.
-    bne ca929                                                         ; a8fe: d0 29       .)
+    cmp command_table,x                                               ; a8fb: dd 43 a9    .C.
+    bne skip_to_next_command                                          ; a8fe: d0 29       .)
     iny                                                               ; a900: c8          .
     inx                                                               ; a901: e8          .
-    lda la943,x                                                       ; a902: bd 43 a9    .C.
-    bne ca8f9                                                         ; a905: d0 f2       ..
+    lda command_table,x                                               ; a902: bd 43 a9    .C.
+    bne check_next_command                                            ; a905: d0 f2       ..
     pla                                                               ; a907: 68          h
     lda #&a9                                                          ; a908: a9 a9       ..
     pha                                                               ; a90a: 48          H
     lda #&20 ; ' '                                                    ; a90b: a9 20       .
     pha                                                               ; a90d: 48          H
-    lda la945,x                                                       ; a90e: bd 45 a9    .E.
+    lda command_table + 2,x                                           ; a90e: bd 45 a9    .E.
     pha                                                               ; a911: 48          H
-    lda la944,x                                                       ; a912: bd 44 a9    .D.
+    lda command_table + 1,x                                           ; a912: bd 44 a9    .D.
     pha                                                               ; a915: 48          H
     lda l18cd                                                         ; a916: ad cd 18    ...
     cmp #2                                                            ; a919: c9 02       ..
@@ -3818,10 +3819,10 @@ oscli           = &fff7
 
     equb &68, &a8, &68, &aa, &68, &a9,   0, &60                       ; a921: 68 a8 68... h.h
 
-.ca929
+.skip_to_next_command
     inx                                                               ; a929: e8          .
-    lda la943,x                                                       ; a92a: bd 43 a9    .C.
-    bne ca929                                                         ; a92d: d0 fa       ..
+    lda command_table,x                                               ; a92a: bd 43 a9    .C.
+    bne skip_to_next_command                                          ; a92d: d0 fa       ..
     inx                                                               ; a92f: e8          .
     inx                                                               ; a930: e8          .
     inx                                                               ; a931: e8          .
@@ -3829,8 +3830,8 @@ oscli           = &fff7
     tay                                                               ; a933: a8          .
     tya                                                               ; a934: 98          .
     pha                                                               ; a935: 48          H
-    lda la943,x                                                       ; a936: bd 43 a9    .C.
-    bne ca8f9                                                         ; a939: d0 be       ..
+    lda command_table,x                                               ; a936: bd 43 a9    .C.
+    bne check_next_command                                            ; a939: d0 be       ..
     pla                                                               ; a93b: 68          h
     tay                                                               ; a93c: a8          .
     pla                                                               ; a93d: 68          h
@@ -3840,11 +3841,9 @@ oscli           = &fff7
     pla                                                               ; a941: 68          h
     rts                                                               ; a942: 60          `
 
-.la943
+.command_table
     equb &44                                                          ; a943: 44          D
-.la944
     equb &46                                                          ; a944: 46          F
-.la945
     equb   0, &7e, &a9, &44, &45,   0, &c6, &a9                       ; a945: 00 7e a9... .~.
     equs "MOUSE"                                                      ; a94d: 4d 4f 55... MOU
     equb   0, &d1, &aa, &4d, &50,   0, &aa, &ab, &53, &50,   0, &c8   ; a952: 00 d1 aa... ...
@@ -4839,9 +4838,7 @@ oscli           = &fff7
 ;     ca8af
 ;     ca8c5
 ;     ca8f0
-;     ca8f9
 ;     ca920
-;     ca929
 ;     cb1c0
 ;     l0000
 ;     l0001
@@ -5001,9 +4998,6 @@ oscli           = &fff7
 ;     la0d8
 ;     la190
 ;     la3d1
-;     la943
-;     la944
-;     la945
 ;     loop_c8186
 ;     loop_c81c0
 ;     loop_c827d

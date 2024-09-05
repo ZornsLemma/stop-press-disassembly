@@ -8,6 +8,10 @@ config.set_label_references(False)
 load(0x8000, "orig/stop-press-1.rom", "6502", "4aa7313ff6faaa8fe26ae724960b0a65")
 acorn.is_sideways_rom()
 
+label(0xddb, "xkeyv")
+expr_label(0xddc, "xkeyv + 1")
+expr_label(0xddd, "xkeyv + 2")
+
 entry(0x8053, "service_auto_boot_and_help")
 entry(0x80ad, "service_handler_part_2")
 entry(0x804c, "service_help")

@@ -7,6 +7,9 @@ acorn.bbc()
 label(0xef, "osbyte_osword_a")
 label(0xf0, "osbyte_osword_x")
 label(0xf1, "osbyte_osword_y")
+label(0xddb, "xkeyv")
+expr_label(0xddc, "xkeyv + 1")
+expr_label(0xddd, "xkeyv + 2")
 
 config.set_label_references(False)
 
@@ -43,5 +46,11 @@ for x in range(26):
     entry(addr, name)
     word(ptr)
     expr(ptr, name)
+
+label(0xa943, "command_table")
+expr_label(0xa944, "command_table + 1")
+expr_label(0xa945, "command_table + 2")
+entry(0xa8f9, "check_next_command")
+entry(0xa929, "skip_to_next_command")
 
 go()
