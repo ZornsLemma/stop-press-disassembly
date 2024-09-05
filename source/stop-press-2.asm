@@ -27,199 +27,199 @@ xevntv_offset                          = 48
 xkeyv_offset                           = 60
 
 ; Memory locations
-l0000           = &0000
-l0001           = &0001
-l0002           = &0002
-l0003           = &0003
-l0004           = &0004
-l0005           = &0005
-l0006           = &0006
-l0007           = &0007
-l0008           = &0008
-l0009           = &0009
-l000a           = &000a
-l000b           = &000b
-l000c           = &000c
-l000d           = &000d
-l000e           = &000e
-l000f           = &000f
-l0015           = &0015
-l0016           = &0016
-l0019           = &0019
-l001a           = &001a
-l001b           = &001b
-l001c           = &001c
-l001d           = &001d
-l001e           = &001e
-l001f           = &001f
-l0023           = &0023
-l0024           = &0024
-l0025           = &0025
-l0026           = &0026
-l0027           = &0027
-l0028           = &0028
-l0029           = &0029
-l002a           = &002a
-l0033           = &0033
-l0034           = &0034
-l0035           = &0035
-l0036           = &0036
-l0037           = &0037
-l0038           = &0038
-l0039           = &0039
-l003a           = &003a
-l003b           = &003b
-l003c           = &003c
-l003d           = &003d
-l003e           = &003e
-l0047           = &0047
-l0048           = &0048
-l0049           = &0049
-l004a           = &004a
-l004e           = &004e
-l004f           = &004f
-l0050           = &0050
-l0051           = &0051
-l0052           = &0052
-l0053           = &0053
-l0054           = &0054
-l0055           = &0055
-l0056           = &0056
-l0057           = &0057
-l0059           = &0059
-l005a           = &005a
-l005b           = &005b
-l005c           = &005c
-l005d           = &005d
-osbyte_osword_a = &00ef
-osbyte_osword_x = &00f0
-osbyte_osword_y = &00f1
-os_text_ptr     = &00f2
-l00f3           = &00f3
-romsel_copy     = &00f4
-l00f8           = &00f8
-l00f9           = &00f9
-l0100           = &0100
-l0104           = &0104
-l0106           = &0106
-irq1v           = &0204
-evntv           = &0220
-keyv            = &0228
-l0300           = &0300
-l0355           = &0355
-l0700           = &0700
-l09f0           = &09f0
-l0a00           = &0a00
-l0b00           = &0b00
-l0da6           = &0da6
-l0da7           = &0da7
-l0da8           = &0da8
-l0da9           = &0da9
-l0daa           = &0daa
-xkeyv           = &0ddb
-l0de4           = &0de4
-l0de5           = &0de5
-l1800           = &1800
-l18cd           = &18cd
-old_keyv        = &18ce
-l18d0           = &18d0
-l18d1           = &18d1
-l18d2           = &18d2
-l18d3           = &18d3
-l18d4           = &18d4
-l18d5           = &18d5
-l18d6           = &18d6
-l18d7           = &18d7
-l18d8           = &18d8
-l18d9           = &18d9
-l18da           = &18da
-l18db           = &18db
-l18dc           = &18dc
-l18dd           = &18dd
-l18de           = &18de
-l18df           = &18df
-l18e0           = &18e0
-l18f0           = &18f0
-l1911           = &1911
-l1912           = &1912
-l1913           = &1913
-l1914           = &1914
-l1915           = &1915
-l1916           = &1916
-l1917           = &1917
-l1918           = &1918
-l1919           = &1919
-l191e           = &191e
-l191f           = &191f
-l1920           = &1920
-l1921           = &1921
-l1922           = &1922
-l1923           = &1923
-l1926           = &1926
-l1927           = &1927
-l1928           = &1928
-l1929           = &1929
-l192a           = &192a
-l192b           = &192b
-l192d           = &192d
-l192f           = &192f
-l1933           = &1933
-l193e           = &193e
-l1941           = &1941
-l1943           = &1943
-l1956           = &1956
-l1957           = &1957
-l1958           = &1958
-l1959           = &1959
-l195a           = &195a
-l195b           = &195b
-l195c           = &195c
-l195d           = &195d
-l195e           = &195e
-l195f           = &195f
-l1960           = &1960
-l1963           = &1963
-l1964           = &1964
-l1965           = &1965
-l196a           = &196a
-l196b           = &196b
-l196c           = &196c
-l196f           = &196f
-l1970           = &1970
-l1971           = &1971
-l1972           = &1972
-l1973           = &1973
-l1974           = &1974
-l1975           = &1975
-l1976           = &1976
-l1977           = &1977
-l1978           = &1978
-l1979           = &1979
-l197a           = &197a
-l197b           = &197b
-l197d           = &197d
-l199d           = &199d
-l19ad           = &19ad
-l2600           = &2600
-l2601           = &2601
-l34e8           = &34e8
-l34f0           = &34f0
-l3768           = &3768
-l3770           = &3770
-l3780           = &3780
-l3781           = &3781
-l7380           = &7380
-l7381           = &7381
-user_via_orb_irb = &fe60
-user_via_ddrb   = &fe62
-user_via_ier    = &fe6e
-osfind          = &ffce
-osgbpb          = &ffd1
-osbget          = &ffd7
-oswrch          = &ffee
-osword          = &fff1
-osbyte          = &fff4
-oscli           = &fff7
+l0000                   = &0000
+l0001                   = &0001
+l0002                   = &0002
+l0003                   = &0003
+l0004                   = &0004
+l0005                   = &0005
+l0006                   = &0006
+l0007                   = &0007
+l0008                   = &0008
+l0009                   = &0009
+l000a                   = &000a
+l000b                   = &000b
+l000c                   = &000c
+l000d                   = &000d
+l000e                   = &000e
+l000f                   = &000f
+l0015                   = &0015
+l0016                   = &0016
+l0019                   = &0019
+l001a                   = &001a
+l001b                   = &001b
+l001c                   = &001c
+l001d                   = &001d
+l001e                   = &001e
+l001f                   = &001f
+l0023                   = &0023
+l0024                   = &0024
+l0025                   = &0025
+l0026                   = &0026
+l0027                   = &0027
+l0028                   = &0028
+l0029                   = &0029
+l002a                   = &002a
+l0033                   = &0033
+l0034                   = &0034
+l0035                   = &0035
+l0036                   = &0036
+l0037                   = &0037
+l0038                   = &0038
+l0039                   = &0039
+l003a                   = &003a
+l003b                   = &003b
+l003c                   = &003c
+l003d                   = &003d
+l003e                   = &003e
+l0047                   = &0047
+l0048                   = &0048
+l0049                   = &0049
+l004a                   = &004a
+l004e                   = &004e
+l004f                   = &004f
+l0050                   = &0050
+l0051                   = &0051
+l0052                   = &0052
+l0053                   = &0053
+l0054                   = &0054
+l0055                   = &0055
+l0056                   = &0056
+l0057                   = &0057
+l0059                   = &0059
+l005a                   = &005a
+l005b                   = &005b
+l005c                   = &005c
+l005d                   = &005d
+osbyte_osword_a         = &00ef
+osbyte_osword_x         = &00f0
+osbyte_osword_y         = &00f1
+os_text_ptr             = &00f2
+l00f3                   = &00f3
+romsel_copy             = &00f4
+l00f8                   = &00f8
+l00f9                   = &00f9
+l0100                   = &0100
+l0104                   = &0104
+l0106                   = &0106
+irq1v                   = &0204
+evntv                   = &0220
+keyv                    = &0228
+l0300                   = &0300
+l0355                   = &0355
+l0700                   = &0700
+l09f0                   = &09f0
+l0a00                   = &0a00
+l0b00                   = &0b00
+l0da6                   = &0da6
+l0da7                   = &0da7
+l0da8                   = &0da8
+l0da9                   = &0da9
+l0daa                   = &0daa
+xkeyv                   = &0ddb
+l0de4                   = &0de4
+l0de5                   = &0de5
+l1800                   = &1800
+mouse_or_joystick_flag  = &18cd
+old_keyv                = &18ce
+l18d0                   = &18d0
+l18d1                   = &18d1
+l18d2                   = &18d2
+l18d3                   = &18d3
+l18d4                   = &18d4
+l18d5                   = &18d5
+l18d6                   = &18d6
+l18d7                   = &18d7
+l18d8                   = &18d8
+l18d9                   = &18d9
+l18da                   = &18da
+l18db                   = &18db
+l18dc                   = &18dc
+l18dd                   = &18dd
+l18de                   = &18de
+l18df                   = &18df
+l18e0                   = &18e0
+l18f0                   = &18f0
+l1911                   = &1911
+l1912                   = &1912
+l1913                   = &1913
+l1914                   = &1914
+l1915                   = &1915
+l1916                   = &1916
+l1917                   = &1917
+l1918                   = &1918
+l1919                   = &1919
+l191e                   = &191e
+l191f                   = &191f
+l1920                   = &1920
+l1921                   = &1921
+l1922                   = &1922
+l1923                   = &1923
+l1926                   = &1926
+l1927                   = &1927
+l1928                   = &1928
+l1929                   = &1929
+l192a                   = &192a
+l192b                   = &192b
+l192d                   = &192d
+l192f                   = &192f
+l1933                   = &1933
+l193e                   = &193e
+l1941                   = &1941
+l1943                   = &1943
+l1956                   = &1956
+l1957                   = &1957
+l1958                   = &1958
+l1959                   = &1959
+l195a                   = &195a
+l195b                   = &195b
+l195c                   = &195c
+l195d                   = &195d
+l195e                   = &195e
+l195f                   = &195f
+l1960                   = &1960
+l1963                   = &1963
+l1964                   = &1964
+l1965                   = &1965
+l196a                   = &196a
+l196b                   = &196b
+l196c                   = &196c
+l196f                   = &196f
+l1970                   = &1970
+l1971                   = &1971
+l1972                   = &1972
+l1973                   = &1973
+l1974                   = &1974
+l1975                   = &1975
+l1976                   = &1976
+l1977                   = &1977
+l1978                   = &1978
+l1979                   = &1979
+l197a                   = &197a
+l197b                   = &197b
+l197d                   = &197d
+l199d                   = &199d
+l19ad                   = &19ad
+l2600                   = &2600
+l2601                   = &2601
+l34e8                   = &34e8
+l34f0                   = &34f0
+l3768                   = &3768
+l3770                   = &3770
+l3780                   = &3780
+l3781                   = &3781
+l7380                   = &7380
+l7381                   = &7381
+user_via_orb_irb        = &fe60
+user_via_ddrb           = &fe62
+user_via_ier            = &fe6e
+osfind                  = &ffce
+osgbpb                  = &ffd1
+osbget                  = &ffd7
+oswrch                  = &ffee
+osword                  = &fff1
+osbyte                  = &fff4
+oscli                   = &fff7
 
     org &8000
 
@@ -3717,7 +3717,7 @@ oscli           = &fff7
     pha                                                               ; a820: 48          H
     lda #&e0                                                          ; a821: a9 e0       ..
     sta l18d6                                                         ; a823: 8d d6 18    ...
-    lda l18cd                                                         ; a826: ad cd 18    ...
+    lda mouse_or_joystick_flag                                        ; a826: ad cd 18    ...
     cmp #2                                                            ; a829: c9 02       ..
     bne ca84d                                                         ; a82b: d0 20       .
     jsr sub_cb155                                                     ; a82d: 20 55 b1     U.
@@ -3779,7 +3779,7 @@ oscli           = &fff7
     sta (osbyte_osword_x),y                                           ; a898: 91 f0       ..
     dey                                                               ; a89a: 88          .
     bpl loop_ca895                                                    ; a89b: 10 f8       ..
-    lda l18cd                                                         ; a89d: ad cd 18    ...
+    lda mouse_or_joystick_flag                                        ; a89d: ad cd 18    ...
     cmp #2                                                            ; a8a0: c9 02       ..
     beq ca8af                                                         ; a8a2: f0 0b       ..
     ldy #6                                                            ; a8a4: a0 06       ..
@@ -3858,7 +3858,7 @@ oscli           = &fff7
     pha                                                               ; a911: 48          H
     lda command_table + 1,x                                           ; a912: bd 44 a9    .D.
     pha                                                               ; a915: 48          H
-    lda l18cd                                                         ; a916: ad cd 18    ...
+    lda mouse_or_joystick_flag                                        ; a916: ad cd 18    ...
     cmp #2                                                            ; a919: c9 02       ..
     bne ca920                                                         ; a91b: d0 03       ..
     jsr sub_cb155                                                     ; a91d: 20 55 b1     U.
@@ -3995,10 +3995,15 @@ oscli           = &fff7
     bvc caa01                                                         ; a9fc: 50 03       P.
     jmp plp_jmp_old_keyv                                              ; a9fe: 4c 91 aa    L..
 
+; At this point, we have C set or V clear or both. TODO: This feels wrong - so we could
+; be in any of three very different KEYV uses but we just treat them all the same?
+; Except for some strange checks on X even though X doesn't always have a well-defined
+; value for some KEYV uses? All we've ruled out is the C=0, V=1 key pressed interrupt
+; entry case.
 .caa01
     cpx #&ea                                                          ; aa01: e0 ea       ..
     bne caa33                                                         ; aa03: d0 2e       ..
-    lda l18cd                                                         ; aa05: ad cd 18    ...
+    lda mouse_or_joystick_flag                                        ; aa05: ad cd 18    ...
     cmp #1                                                            ; aa08: c9 01       ..
     beq caa25                                                         ; aa0a: f0 19       ..
     lda #osbyte_read_adc_or_get_buffer_status                         ; aa0c: a9 80       ..
@@ -4064,7 +4069,7 @@ oscli           = &fff7
 .caa5e
     cpx #0                                                            ; aa5e: e0 00       ..
     bne plp_jmp_old_keyv                                              ; aa60: d0 2f       ./
-    lda l18cd                                                         ; aa62: ad cd 18    ...
+    lda mouse_or_joystick_flag                                        ; aa62: ad cd 18    ...
     cmp #1                                                            ; aa65: c9 01       ..
     beq caa82                                                         ; aa67: f0 19       ..
     lda #osbyte_read_adc_or_get_buffer_status                         ; aa69: a9 80       ..
@@ -4134,7 +4139,7 @@ oscli           = &fff7
 
 .command_pMOUSE
     lda #1                                                            ; aad2: a9 01       ..
-    sta l18cd                                                         ; aad4: 8d cd 18    ...
+    sta mouse_or_joystick_flag                                        ; aad4: 8d cd 18    ...
     lda #2                                                            ; aad7: a9 02       ..
     sta l18df                                                         ; aad9: 8d df 18    ...
     lda #0                                                            ; aadc: a9 00       ..
@@ -4871,7 +4876,7 @@ oscli           = &fff7
 
 .command_pJOYSTICK
     lda #2                                                            ; b14c: a9 02       ..
-    sta l18cd                                                         ; b14e: 8d cd 18    ...
+    sta mouse_or_joystick_flag                                        ; b14e: 8d cd 18    ...
     jsr sub_caa95                                                     ; b151: 20 95 aa     ..
     rts                                                               ; b154: 60          `
 
@@ -5948,7 +5953,6 @@ oscli           = &fff7
 ;     l0de4
 ;     l0de5
 ;     l1800
-;     l18cd
 ;     l18d0
 ;     l18d1
 ;     l18d2
