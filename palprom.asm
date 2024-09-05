@@ -56,7 +56,7 @@ c808d = &808d
      jmp skip_8060
     assert P% <= &8060
     skipto &8060
-    ; This code won't be used normally, but having this here might help testing.
+    ; This code won't be used normally, but having this here might help testing. I think it means we can use this variant on ROM 1 in place of the original along with the original ROM 2, in order to test the new service handler is basically sound.
     rts
     skipto &8070
 .skip_8060
