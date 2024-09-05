@@ -3802,9 +3802,9 @@ oscli           = &fff7
     lda command_table,x                                               ; a902: bd 43 a9    .C.
     bne check_next_command                                            ; a905: d0 f2       ..
     pla                                                               ; a907: 68          h
-    lda #&a9                                                          ; a908: a9 a9       ..
+    lda #>(command_done - 1)                                          ; a908: a9 a9       ..
     pha                                                               ; a90a: 48          H
-    lda #&20 ; ' '                                                    ; a90b: a9 20       .
+    lda #<(command_done - 1)                                          ; a90b: a9 20       .
     pha                                                               ; a90d: 48          H
     lda command_table + 2,x                                           ; a90e: bd 45 a9    .E.
     pha                                                               ; a911: 48          H
@@ -3817,7 +3817,14 @@ oscli           = &fff7
 .ca920
     rts                                                               ; a920: 60          `
 
-    equb &68, &a8, &68, &aa, &68, &a9,   0, &60                       ; a921: 68 a8 68... h.h
+.command_done
+    pla                                                               ; a921: 68          h
+    tay                                                               ; a922: a8          .
+    pla                                                               ; a923: 68          h
+    tax                                                               ; a924: aa          .
+    pla                                                               ; a925: 68          h
+    lda #0                                                            ; a926: a9 00       ..
+    rts                                                               ; a928: 60          `
 
 .skip_to_next_command
     inx                                                               ; a929: e8          .
@@ -3842,38 +3849,59 @@ oscli           = &fff7
     rts                                                               ; a942: 60          `
 
 .command_table
-    equb &44                                                          ; a943: 44          D
-    equb &46                                                          ; a944: 46          F
-    equb   0, &7e, &a9, &44, &45,   0, &c6, &a9                       ; a945: 00 7e a9... .~.
-    equs "MOUSE"                                                      ; a94d: 4d 4f 55... MOU
-    equb   0, &d1, &aa, &4d, &50,   0, &aa, &ab, &53, &50,   0, &c8   ; a952: 00 d1 aa... ...
-    equb &ab, &48, &50,   0, &73, &ab, &53, &45,   0, &f0, &ad, &49   ; a95e: ab 48 50... .HP
-    equb &43,   0, &19, &ae, &57, &49,   0, &f7, &ae                  ; a96a: 43 00 19... C..
-    equs "JOYSTICK"                                                   ; a973: 4a 4f 59... JOY
-    equb   0, &4b, &b1,   0, &b1, &f2, &c8, &c9, &20, &d0, &f9, &98   ; a97b: 00 4b b1... .K.
-    equb &18, &65, &f2, &aa, &a5, &f3, &69,   0, &a8, &a9, &40, &20   ; a987: 18 65 f2... .e.
-    equb &ce, &ff, &85, &f2, &a2, &fc, &a9, &17, &20, &ee, &ff, &8a   ; a993: ce ff 85... ...
-    equb &20, &ee, &ff, &a9,   8, &85, &f3, &a4, &f2, &20, &d7, &ff   ; a99f: 20 ee ff...  ..
-    equb &20, &ee, &ff, &c6, &f3, &d0, &f4, &e8, &8a, &29,   3, &d0   ; a9ab: 20 ee ff...  ..
-    equb &e1, &8a, &38, &e9,   8, &aa, &30, &da, &a9,   0, &a4, &f2   ; a9b7: e1 8a 38... ..8
-    equb &20, &ce, &ff, &60, &a2,   0, &bd, &ed, &a9, &20, &ee, &ff   ; a9c3: 20 ce ff...  ..
-    equb &e8, &e0, &0c, &d0, &f5, &a9, &84, &20, &f4, &ff, &86, &f2   ; a9cf: e8 e0 0c... ...
-    equb &84, &f3, &a0,   0, &a9, &aa, &91, &f2, &49, &ff, &88, &d0   ; a9db: 84 f3 a0... ...
-    equb &f9, &e6, &f3, &10, &f5, &60, &13,   0,   7,   0,   0,   0   ; a9e7: f9 e6 f3... ...
-    equb &13,   1,   0,   0,   0,   0,   8, &b0,   5, &50,   3, &4c   ; a9f3: 13 01 00... ...
-    equb &91, &aa, &e0, &ea, &d0, &2e, &ad, &cd, &18, &c9,   1, &f0   ; a9ff: 91 aa e0... ...
-    equb &19, &a9, &80, &a2,   0, &20, &f4, &ff, &8a, &29,   1, &aa   ; aa0b: 19 a9 80... ...
-    equb &a9, &80, &e0,   0, &d0,   5, &a2, &a0, &4c, &91, &aa, &aa   ; aa17: a9 80 e0... ...
-    equb &28, &60, &ad, &60, &fe, &29, &20, &0a, &0a, &49, &80, &f0   ; aa23: 28 60 ad... (`.
-    equb &ed, &aa, &28, &60, &e0, &eb, &d0, &12, &ad, &60, &fe, &29   ; aa2f: ed aa 28... ..(
-    equb &40, &0a, &49, &80, &f0,   3, &aa, &28, &60, &a2, &f1, &4c   ; aa3b: 40 0a 49... @.I
-    equb &91, &aa, &e0, &ec, &d0, &11, &ad, &60, &fe, &29, &80, &49   ; aa47: 91 aa e0... ...
-    equb &80, &f0,   3, &aa, &28, &60, &a2, &f2, &4c, &91, &aa, &e0   ; aa53: 80 f0 03... ...
-    equb   0, &d0, &2f, &ad, &cd, &18, &c9,   1, &f0, &19, &a9, &80   ; aa5f: 00 d0 2f... ../
-    equb &a2,   0, &20, &f4, &ff, &8a, &29,   1, &aa, &a9,   0, &e0   ; aa6b: a2 00 20... ..
-    equb   0, &d0,   5, &a2,   0, &4c, &91, &aa, &aa, &28, &60, &ad   ; aa77: 00 d0 05... ...
-    equb &60, &fe, &29, &e0, &c9, &e0, &f0,   6, &a9,   0, &aa, &68   ; aa83: 60 fe 29... `.)
-    equb &8a                                                          ; aa8f: 8a          .
+    equs "DF", 0                                                      ; a943: 44 46 00    DF.
+    equb &7e                                                          ; a946: 7e          ~
+    equb &a9                                                          ; a947: a9          .
+    equs "DE", 0                                                      ; a948: 44 45 00    DE.
+    equb &c6                                                          ; a94b: c6          .
+    equb &a9                                                          ; a94c: a9          .
+    equs "MOUSE", 0                                                   ; a94d: 4d 4f 55... MOU
+    equb &d1                                                          ; a953: d1          .
+    equb &aa                                                          ; a954: aa          .
+    equs "MP", 0                                                      ; a955: 4d 50 00    MP.
+    equb &aa                                                          ; a958: aa          .
+    equb &ab                                                          ; a959: ab          .
+    equs "SP", 0                                                      ; a95a: 53 50 00    SP.
+    equb &c8                                                          ; a95d: c8          .
+    equb &ab                                                          ; a95e: ab          .
+    equs "HP", 0                                                      ; a95f: 48 50 00    HP.
+    equb &73                                                          ; a962: 73          s
+    equb &ab                                                          ; a963: ab          .
+    equs "SE", 0                                                      ; a964: 53 45 00    SE.
+    equb &f0                                                          ; a967: f0          .
+    equb &ad                                                          ; a968: ad          .
+    equs "IC", 0                                                      ; a969: 49 43 00    IC.
+    equb &19                                                          ; a96c: 19          .
+    equb &ae                                                          ; a96d: ae          .
+    equs "WI", 0                                                      ; a96e: 57 49 00    WI.
+    equb &f7                                                          ; a971: f7          .
+    equb &ae                                                          ; a972: ae          .
+    equs "JOYSTICK", 0                                                ; a973: 4a 4f 59... JOY
+    equb &4b                                                          ; a97c: 4b          K
+    equb &b1                                                          ; a97d: b1          .
+    equb   0, &b1, &f2, &c8, &c9, &20, &d0, &f9, &98, &18, &65, &f2   ; a97e: 00 b1 f2... ...
+    equb &aa, &a5, &f3, &69,   0, &a8, &a9, &40, &20, &ce, &ff, &85   ; a98a: aa a5 f3... ...
+    equb &f2, &a2, &fc, &a9, &17, &20, &ee, &ff, &8a, &20, &ee, &ff   ; a996: f2 a2 fc... ...
+    equb &a9,   8, &85, &f3, &a4, &f2, &20, &d7, &ff, &20, &ee, &ff   ; a9a2: a9 08 85... ...
+    equb &c6, &f3, &d0, &f4, &e8, &8a, &29,   3, &d0, &e1, &8a, &38   ; a9ae: c6 f3 d0... ...
+    equb &e9,   8, &aa, &30, &da, &a9,   0, &a4, &f2, &20, &ce, &ff   ; a9ba: e9 08 aa... ...
+    equb &60, &a2,   0, &bd, &ed, &a9, &20, &ee, &ff, &e8, &e0, &0c   ; a9c6: 60 a2 00... `..
+    equb &d0, &f5, &a9, &84, &20, &f4, &ff, &86, &f2, &84, &f3, &a0   ; a9d2: d0 f5 a9... ...
+    equb   0, &a9, &aa, &91, &f2, &49, &ff, &88, &d0, &f9, &e6, &f3   ; a9de: 00 a9 aa... ...
+    equb &10, &f5, &60, &13,   0,   7,   0,   0,   0, &13,   1,   0   ; a9ea: 10 f5 60... ..`
+    equb   0,   0,   0,   8, &b0,   5, &50,   3, &4c, &91, &aa, &e0   ; a9f6: 00 00 00... ...
+    equb &ea, &d0, &2e, &ad, &cd, &18, &c9,   1, &f0, &19, &a9, &80   ; aa02: ea d0 2e... ...
+    equb &a2,   0, &20, &f4, &ff, &8a, &29,   1, &aa, &a9, &80, &e0   ; aa0e: a2 00 20... ..
+    equb   0, &d0,   5, &a2, &a0, &4c, &91, &aa, &aa, &28, &60, &ad   ; aa1a: 00 d0 05... ...
+    equb &60, &fe, &29, &20, &0a, &0a, &49, &80, &f0, &ed, &aa, &28   ; aa26: 60 fe 29... `.)
+    equb &60, &e0, &eb, &d0, &12, &ad, &60, &fe, &29, &40, &0a, &49   ; aa32: 60 e0 eb... `..
+    equb &80, &f0,   3, &aa, &28, &60, &a2, &f1, &4c, &91, &aa, &e0   ; aa3e: 80 f0 03... ...
+    equb &ec, &d0, &11, &ad, &60, &fe, &29, &80, &49, &80, &f0,   3   ; aa4a: ec d0 11... ...
+    equb &aa, &28, &60, &a2, &f2, &4c, &91, &aa, &e0,   0, &d0, &2f   ; aa56: aa 28 60... .(`
+    equb &ad, &cd, &18, &c9,   1, &f0, &19, &a9, &80, &a2,   0, &20   ; aa62: ad cd 18... ...
+    equb &f4, &ff, &8a, &29,   1, &aa, &a9,   0, &e0,   0, &d0,   5   ; aa6e: f4 ff 8a... ...
+    equb &a2,   0, &4c, &91, &aa, &aa, &28, &60, &ad, &60, &fe, &29   ; aa7a: a2 00 4c... ..L
+    equb &e0, &c9, &e0, &f0,   6, &a9,   0, &aa, &68, &8a             ; aa86: e0 c9 e0... ...
     equs "`(l"                                                        ; aa90: 60 28 6c    `(l
     equb &ce, &18, &ad, &28,   2, &8d, &ce, &18, &ad, &29,   2, &8d   ; aa93: ce 18 ad... ...
     equb &cf, &18, &a9, &a8, &a2,   0, &a0, &ff, &20, &f4, &ff, &8a   ; aa9f: cf 18 a9... ...
@@ -5084,6 +5112,7 @@ oscli           = &fff7
     assert (255 - inkey_key_f0) EOR 128 == &a0
     assert (255 - inkey_key_f1) EOR 128 == &f1
     assert (255 - inkey_key_f2) EOR 128 == &f2
+    assert <(command_done - 1) == &20
     assert <(l0024) == &24
     assert <(l0100) == &00
     assert <(l0a00) == &00
@@ -5091,6 +5120,7 @@ oscli           = &fff7
     assert <(l1921) == &21
     assert <(l192d) == &2d
     assert <our_osword_1_x_handler_table == &6c
+    assert >(command_done - 1) == &a9
     assert >(l0024) == &00
     assert >(l0100) == &01
     assert >(l0a00) == &0a

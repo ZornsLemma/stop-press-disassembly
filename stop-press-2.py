@@ -52,5 +52,15 @@ expr_label(0xa944, "command_table + 1")
 expr_label(0xa945, "command_table + 2")
 entry(0xa8f9, "check_next_command")
 entry(0xa929, "skip_to_next_command")
+entry(0xa921, "command_done")
+expr(0xa909, make_hi("command_done - 1"))
+expr(0xa90c, make_lo("command_done - 1"))
+
+ptr = 0xa943
+while get_u8_binary(ptr) != 0:
+    ptr = stringz(ptr)
+    byte(ptr)
+    byte(ptr + 1)
+    ptr += 2
 
 go()
