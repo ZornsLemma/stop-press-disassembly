@@ -86,8 +86,6 @@ c808d = &808d
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
 
-; TODO: WE NEED TO CHAIN THE TWO SERVICE HANDLERS TOGETHER!
-
 copyblock &8000, &c000, &4000
 clear &8000, &c000
 
