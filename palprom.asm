@@ -6,6 +6,7 @@ oswrch = &ffee
 osbyte_osword_a = &ef
 osbyte_osword_x = &f0
 osbyte_osword_y = &f1
+os_text_ptr = &f2
 
 ; Original ROM 1/2 becomes bank 1 in the PALPROM
 org &8000
@@ -25,7 +26,7 @@ print_nul_terminated_string_at_yx = &b7c5
 cb76b = &b76b
 l0daa = &0daa
 c808d = &808d
-rts = &8099
+process_string = &be9f
 .service_handler
     jsr &8060 ; chain to other bank service handler
     cmp #0
@@ -94,10 +95,22 @@ rts = &8099
     pla                                                               ; 8096: 68          h
     tax                                                               ; 8097: aa          .
     pla                                                               ; 8098: 68          h
+.rts
     rts                                                               ; 8099: 60          `
 .recheck
     equs "RCR2", 0
     assert P% <= service_handler_part_2
+    skipto service_handler_part_2
+;.service_handler_part_2
+    cmp #4                                                            ; 80ad: c9 04       ..
+    bne ply_plx_pla_rts                                               ; 80af: d0 e3       ..
+.service_command
+    ldx #0                                                            ; 80b1: a2 00       ..
+.loop_c80b3
+    lda (os_text_ptr),y                                               ; 80b3: b1 f2       ..
+    cmp process_string,x                                              ; 80b5: dd 9f be    ...
+    bne ply_plx_pla_rts                                               ; 80b8: d0 da       ..
+    assert P% == &80ba
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
 
