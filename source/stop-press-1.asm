@@ -288,7 +288,7 @@ oscli       = &fff7
     ldy #>(stringnbf2d)                                               ; 816e: a0 bf       ..
     jsr write_stringn_at_yx                                           ; 8170: 20 04 be     ..
     ldy #&12                                                          ; 8173: a0 12       ..
-    jsr sub_cbde3                                                     ; 8175: 20 e3 bd     ..
+    jsr do_our_osword_1_x_4                                           ; 8175: 20 e3 bd     ..
 .c8178
     jsr c830b                                                         ; 8178: 20 0b 83     ..
     cpy #1                                                            ; 817b: c0 01       ..
@@ -300,7 +300,7 @@ oscli       = &fff7
     stx l191e                                                         ; 8185: 8e 1e 19    ...
     stx l1921                                                         ; 8188: 8e 21 19    .!.
     tay                                                               ; 818b: a8          .
-    jsr sub_cbdde                                                     ; 818c: 20 de bd     ..
+    jsr do_our_osword_1_x_3                                           ; 818c: 20 de bd     ..
     lda #&53 ; 'S'                                                    ; 818f: a9 53       .S
     sta l1927                                                         ; 8191: 8d 27 19    .'.
     lda #0                                                            ; 8194: a9 00       ..
@@ -359,7 +359,7 @@ oscli       = &fff7
     bne c81d5                                                         ; 820a: d0 c9       ..
 .c820c
     jsr sub_cbe32                                                     ; 820c: 20 32 be     2.
-    jsr cb926                                                         ; 820f: 20 26 b9     &.
+    jsr do_our_osword_2_yx_24_and_postprocess                         ; 820f: 20 26 b9     &.
     lda l002a                                                         ; 8212: a5 2a       .*
     and #&80                                                          ; 8214: 29 80       ).
     bne c821e                                                         ; 8216: d0 06       ..
@@ -412,7 +412,7 @@ oscli       = &fff7
     dex                                                               ; 826a: ca          .
     dex                                                               ; 826b: ca          .
     stx l005d                                                         ; 826c: 86 5d       .]
-    jsr sub_cbde8                                                     ; 826e: 20 e8 bd     ..
+    jsr do_our_osword_1_x_5                                           ; 826e: 20 e8 bd     ..
     lda #7                                                            ; 8271: a9 07       ..
     sta l001f                                                         ; 8273: 85 1f       ..
     lda #&37 ; '7'                                                    ; 8275: a9 37       .7
@@ -482,7 +482,7 @@ oscli       = &fff7
 .loop_c82ea
     bne loop_c82ea                                                    ; 82ea: d0 fe       ..
 .c82ec
-    jsr cb926                                                         ; 82ec: 20 26 b9     &.
+    jsr do_our_osword_2_yx_24_and_postprocess                         ; 82ec: 20 26 b9     &.
     lda l002a                                                         ; 82ef: a5 2a       .*
     and #&20 ; ' '                                                    ; 82f1: 29 20       )
     beq c82fa                                                         ; 82f3: f0 05       ..
@@ -499,7 +499,7 @@ oscli       = &fff7
     jmp c82ec                                                         ; 8308: 4c ec 82    L..
 
 .c830b
-    jsr cb926                                                         ; 830b: 20 26 b9     &.
+    jsr do_our_osword_2_yx_24_and_postprocess                         ; 830b: 20 26 b9     &.
     ldx #&24 ; '$'                                                    ; 830e: a2 24       .$
     ldy #&2f ; '/'                                                    ; 8310: a0 2f       ./
     jsr cbd6e                                                         ; 8312: 20 6e bd     n.
@@ -740,7 +740,7 @@ oscli       = &fff7
     asl a                                                             ; 84c2: 0a          .
     rol l1952                                                         ; 84c3: 2e 52 19    .R.
     sta l1951                                                         ; 84c6: 8d 51 19    .Q.
-    jsr sub_cbde8                                                     ; 84c9: 20 e8 bd     ..
+    jsr do_our_osword_1_x_5                                           ; 84c9: 20 e8 bd     ..
     jmp c84e4                                                         ; 84cc: 4c e4 84    L..
 
 .c84cf
@@ -753,7 +753,7 @@ oscli       = &fff7
     jmp c8488                                                         ; 84d6: 4c 88 84    L..
 
 .c84d9
-    jsr sub_cbde8                                                     ; 84d9: 20 e8 bd     ..
+    jsr do_our_osword_1_x_5                                           ; 84d9: 20 e8 bd     ..
     ldy #9                                                            ; 84dc: a0 09       ..
     jsr sub_cbe18                                                     ; 84de: 20 18 be     ..
     jmp c830b                                                         ; 84e1: 4c 0b 83    L..
@@ -1690,7 +1690,7 @@ oscli       = &fff7
     jsr do_our_osword_1                                               ; a91b: 20 6b b7     k.
     rts                                                               ; a91e: 60          `
 
-.sub_ca91f
+.long_delay
     ldx #0                                                            ; a91f: a2 00       ..
     ldy #0                                                            ; a921: a0 00       ..
 .ca923
@@ -2267,13 +2267,13 @@ oscli       = &fff7
     rts                                                               ; b85b: 60          `
 
 .cb85c
-    jsr cb926                                                         ; b85c: 20 26 b9     &.
+    jsr do_our_osword_2_yx_24_and_postprocess                         ; b85c: 20 26 b9     &.
     lda l002a                                                         ; b85f: a5 2a       .*
     and #&e0                                                          ; b861: 29 e0       ).
     cmp #&e0                                                          ; b863: c9 e0       ..
     bne cb85c                                                         ; b865: d0 f5       ..
 .loop_cb867
-    jsr cb926                                                         ; b867: 20 26 b9     &.
+    jsr do_our_osword_2_yx_24_and_postprocess                         ; b867: 20 26 b9     &.
     lda l002a                                                         ; b86a: a5 2a       .*
     and #&20 ; ' '                                                    ; b86c: 29 20       )
     clc                                                               ; b86e: 18          .
@@ -2399,7 +2399,7 @@ oscli       = &fff7
 .cb925
     rts                                                               ; b925: 60          `
 
-.cb926
+.do_our_osword_2_yx_24_and_postprocess
     lda #&36 ; '6'                                                    ; b926: a9 36       .6
     ldx #<(l0024)                                                     ; b928: a2 24       .$
     ldy #>(l0024)                                                     ; b92a: a0 00       ..
@@ -2417,8 +2417,8 @@ oscli       = &fff7
     bne cb951                                                         ; b944: d0 0b       ..
     ldx #&0e                                                          ; b946: a2 0e       ..
     jsr do_our_osword_1                                               ; b948: 20 6b b7     k.
-    jsr sub_ca91f                                                     ; b94b: 20 1f a9     ..
-    jmp cb926                                                         ; b94e: 4c 26 b9    L&.
+    jsr long_delay                                                    ; b94b: 20 1f a9     ..
+    jmp do_our_osword_2_yx_24_and_postprocess                         ; b94e: 4c 26 b9    L&.
 
 .cb951
     lda l0024                                                         ; b951: a5 24       .$
@@ -2462,7 +2462,7 @@ oscli       = &fff7
     jsr sub_cb877                                                     ; b9a3: 20 77 b8     w.
     ldy #0                                                            ; b9a6: a0 00       ..
 .loop_cb9a8
-    lda lbeef,y                                                       ; b9a8: b9 ef be    ...
+    lda command_copied_to_a00,y                                       ; b9a8: b9 ef be    ...
     sta l0a00,y                                                       ; b9ab: 99 00 0a    ...
     iny                                                               ; b9ae: c8          .
     cmp #&0d                                                          ; b9af: c9 0d       ..
@@ -2493,7 +2493,7 @@ oscli       = &fff7
     ldx #&18                                                          ; b9de: a2 18       ..
     jsr do_our_osword_1                                               ; b9e0: 20 6b b7     k.
 .loop_cb9e3
-    jsr cb926                                                         ; b9e3: 20 26 b9     &.
+    jsr do_our_osword_2_yx_24_and_postprocess                         ; b9e3: 20 26 b9     &.
     lda l002a                                                         ; b9e6: a5 2a       .*
     bmi loop_cb9e3                                                    ; b9e8: 30 f9       0.
     jsr sub_cbd46                                                     ; b9ea: 20 46 bd     F.
@@ -2644,15 +2644,15 @@ oscli       = &fff7
     equb   0, &4c, &ee, &ff, &20, &c3, &bd, &b9,   2,   0, &20, &ee   ; bdcb: 00 4c ee... .L.
     equb &ff, &b9,   3,   0, &4c, &ee, &ff                            ; bdd7: ff b9 03... ...
 
-.sub_cbdde
+.do_our_osword_1_x_3
     ldx #3                                                            ; bdde: a2 03       ..
     jmp do_our_osword_1                                               ; bde0: 4c 6b b7    Lk.
 
-.sub_cbde3
+.do_our_osword_1_x_4
     ldx #4                                                            ; bde3: a2 04       ..
     jmp do_our_osword_1                                               ; bde5: 4c 6b b7    Lk.
 
-.sub_cbde8
+.do_our_osword_1_x_5
     ldx #5                                                            ; bde8: a2 05       ..
     jmp do_our_osword_1                                               ; bdea: 4c 6b b7    Lk.
 
@@ -2775,9 +2775,9 @@ oscli       = &fff7
     equb &8b, &8e, &67, &78, &94, &dd, &7f, &90, &a0, &21, &97, &a8   ; bed5: 8b 8e 67... ..g
     equb &b0,   5, &af, &c0, &b2, &1b, &c7, &db, &b2, &d3, &e2, &f1   ; bee1: b0 05 af... ...
     equb &85, &43                                                     ; beed: 85 43       .C
-.lbeef
-    equs "pWI 22,17,51,13"                                            ; beef: 70 57 49... pWI
-    equb &0d, &14, &0a                                                ; befe: 0d 14 0a    ...
+.command_copied_to_a00
+    equs "pWI 22,17,51,13", &0d                                       ; beef: 70 57 49... pWI
+    equb &14, &0a                                                     ; beff: 14 0a       ..
     equs "  Enter Filename : "                                        ; bf01: 20 20 45...   E
     equb &0d                                                          ; bf14: 0d          .
     equs "     No Such Filename !"                                    ; bf15: 20 20 20...
@@ -2866,7 +2866,6 @@ oscli       = &fff7
 ;     cb8d7
 ;     cb8de
 ;     cb925
-;     cb926
 ;     cb951
 ;     cb97a
 ;     cb97b
@@ -2969,7 +2968,6 @@ oscli       = &fff7
 ;     lbecc
 ;     lbecd
 ;     lbece
-;     lbeef
 ;     lbf2e
 ;     lbf39
 ;     loop_c80b3
@@ -2998,7 +2996,6 @@ oscli       = &fff7
 ;     sub_c83ca
 ;     sub_c84f6
 ;     sub_c84f9
-;     sub_ca91f
 ;     sub_cb617
 ;     sub_cb64f
 ;     sub_cb6e7
@@ -3016,9 +3013,6 @@ oscli       = &fff7
 ;     sub_cbd41
 ;     sub_cbd46
 ;     sub_cbd4b
-;     sub_cbdde
-;     sub_cbde3
-;     sub_cbde8
 ;     sub_cbe18
 ;     sub_cbe1d
 ;     sub_cbe32

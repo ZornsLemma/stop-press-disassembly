@@ -49,8 +49,18 @@ subroutine(0xbe04, "write_stringn_at_yx", None, None, hook=wsnyx_hook, is_entry_
 
 entry(0xb76b, "do_our_osword_1")
 entry(0xa919, "do_our_osword_1_x_10")
+entry(0xbdde, "do_our_osword_1_x_3")
+entry(0xbde3, "do_our_osword_1_x_4")
+entry(0xbde8, "do_our_osword_1_x_5")
+
+entry(0xb926, "do_our_osword_2_yx_24_and_postprocess")
+
+entry(0xa91f, "long_delay")
 
 label(0xbea9, "data_copied_to_1900")
 entry(0xb14d, "copy_data_to_1900_and_zero_l1911")
+
+label(0xbeef, "command_copied_to_a00")
+stringcr(0xbeef)
 
 go()
