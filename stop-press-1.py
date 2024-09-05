@@ -18,6 +18,12 @@ entry(0x804c, "service_help")
 entry(0x8094, "ply_plx_pla_rts")
 entry(0x80b1, "service_command")
 
+constant(3, "xbrkv_offset")
+expr(0x8136, "xbrkv_offset")
+entry(0xb995, "xbrkv_handler")
+expr(0x8138, make_lo("xbrkv_handler"))
+expr(0x813d, make_hi("xbrkv_handler"))
+
 def pntsyx_hook(runtime_addr, state, subroutine):
     x_addr = state.get_previous_load_imm('x')
     y_addr = state.get_previous_load_imm('y')
@@ -40,5 +46,11 @@ def wsnyx_hook(runtime_addr, state, subroutine):
         label(string_addr, "stringn%04x" % string_addr)
         stringn(string_addr)
 subroutine(0xbe04, "write_stringn_at_yx", None, None, hook=wsnyx_hook, is_entry_point=True)
+
+entry(0xb76b, "do_our_osword_1")
+entry(0xa919, "do_our_osword_1_x_10")
+
+label(0xbea9, "data_copied_to_1900")
+entry(0xb14d, "copy_data_to_1900_and_zero_l1911")
 
 go()
