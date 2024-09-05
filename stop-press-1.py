@@ -63,4 +63,9 @@ entry(0xb14d, "copy_data_to_1900_and_zero_l1911")
 label(0xbeef, "command_copied_to_a00")
 stringcr(0xbeef)
 
+entry(0x84f6, "jmp_indirect_l191c")
+label(0xbecc, "jump_table")
+expr_label(0xbecd, "jump_table + 1")
+expr_label(0xbece, "jump_table + 2")
+
 go()

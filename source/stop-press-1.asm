@@ -715,14 +715,14 @@ oscli       = &fff7
     sec                                                               ; 848b: 38          8
     sbc l0026                                                         ; 848c: e5 26       .&
     bcs c84cf                                                         ; 848e: b0 3f       .?
-    lda lbecc,y                                                       ; 8490: b9 cc be    ...
+    lda jump_table,y                                                  ; 8490: b9 cc be    ...
     cmp l0026                                                         ; 8493: c5 26       .&
     bcc c84cf                                                         ; 8495: 90 38       .8
-    lda lbece,y                                                       ; 8497: b9 ce be    ...
+    lda jump_table + 2,y                                              ; 8497: b9 ce be    ...
     sta l191c                                                         ; 849a: 8d 1c 19    ...
-    lda lbecd,y                                                       ; 849d: b9 cd be    ...
+    lda jump_table + 1,y                                              ; 849d: b9 cd be    ...
     sta l191d                                                         ; 84a0: 8d 1d 19    ...
-    lda lbecc,y                                                       ; 84a3: b9 cc be    ...
+    lda jump_table,y                                                  ; 84a3: b9 cc be    ...
     clc                                                               ; 84a6: 18          .
     adc #1                                                            ; 84a7: 69 01       i.
     eor #&ff                                                          ; 84a9: 49 ff       I.
@@ -763,11 +763,11 @@ oscli       = &fff7
     jsr sub_cb877                                                     ; 84e7: 20 77 b8     w.
     lda #4                                                            ; 84ea: a9 04       ..
     jsr oswrch                                                        ; 84ec: 20 ee ff     ..            ; Write character 4
-    jsr sub_c84f6                                                     ; 84ef: 20 f6 84     ..
+    jsr jmp_indirect_l191c                                            ; 84ef: 20 f6 84     ..
     jsr sub_c84f9                                                     ; 84f2: 20 f9 84     ..
     rts                                                               ; 84f5: 60          `
 
-.sub_c84f6
+.jmp_indirect_l191c
     jmp (l191c)                                                       ; 84f6: 6c 1c 19    l..
 
 .sub_c84f9
@@ -2764,11 +2764,9 @@ oscli       = &fff7
     equb   0,   0, &d4, &ff, &19,   2, &e2, &ff,   0,   0             ; bec1: 00 00 d4... ...
 .lbecb
     equb &20                                                          ; becb: 20
-.lbecc
+.jump_table
     equb &30                                                          ; becc: 30          0
-.lbecd
     equb &85                                                          ; becd: 85          .
-.lbece
     equs ">7H"                                                        ; bece: 3e 37 48    >7H
     equb &85                                                          ; bed1: 85          .
     equs "qO`"                                                        ; bed2: 71 4f 60    qO`
@@ -2965,9 +2963,6 @@ oscli       = &fff7
 ;     l8536
 ;     l853e
 ;     lbecb
-;     lbecc
-;     lbecd
-;     lbece
 ;     lbf2e
 ;     lbf39
 ;     loop_c80b3
@@ -2994,7 +2989,6 @@ oscli       = &fff7
 ;     sub_c8335
 ;     sub_c839f
 ;     sub_c83ca
-;     sub_c84f6
 ;     sub_c84f9
 ;     sub_cb617
 ;     sub_cb64f
