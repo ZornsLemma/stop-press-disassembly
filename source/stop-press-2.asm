@@ -4005,7 +4005,7 @@ oscli                   = &fff7
     bne caa33                                                         ; aa03: d0 2e       ..
     lda mouse_or_joystick_flag                                        ; aa05: ad cd 18    ...
     cmp #1                                                            ; aa08: c9 01       ..
-    beq caa25                                                         ; aa0a: f0 19       ..
+    beq using_mouse                                                   ; aa0a: f0 19       ..
     lda #osbyte_read_adc_or_get_buffer_status                         ; aa0c: a9 80       ..
     ldx #0                                                            ; aa0e: a2 00       ..
     jsr osbyte                                                        ; aa10: 20 f4 ff     ..            ; Read the channel number last used for an ADC conversion and joystick fire buttons (X=0)
@@ -4024,7 +4024,7 @@ oscli                   = &fff7
     plp                                                               ; aa23: 28          (
     rts                                                               ; aa24: 60          `
 
-.caa25
+.using_mouse
     lda user_via_orb_irb                                              ; aa25: ad 60 fe    .`.
     and #&20 ; ' '                                                    ; aa28: 29 20       )
     asl a                                                             ; aa2a: 0a          .
@@ -5824,7 +5824,6 @@ oscli                   = &fff7
 ;     ca9e1
 ;     caa01
 ;     caa22
-;     caa25
 ;     caa33
 ;     caa44
 ;     caa49

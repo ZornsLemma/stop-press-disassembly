@@ -92,6 +92,7 @@ label(0x18ce, "old_keyv")
 expr_label(0x18cf, "old_keyv + 1")
 
 comment(0xaa01, "At this point, we have C set or V clear or both. TODO: This feels wrong - so we could be in any of three very different KEYV uses but we just treat them all the same? Except for some strange checks on X even though X doesn't always have a well-defined value for some KEYV uses? All we've ruled out is the C=0, V=1 key pressed interrupt entry case.")
+entry(0xaa25, "using_mouse")
 
 label(0x18cd, "mouse_or_joystick_flag")
 
