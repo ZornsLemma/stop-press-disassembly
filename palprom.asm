@@ -297,12 +297,14 @@ org &ab22
 ; TODO: Temporary hack to make the xevntv_handler a no-op
 ;org &b1d1
 ;    rts
+if FALSE
 ; TODO: Temporary hack to never enable vsync event
 org &ab2f
     nop:nop:nop
 ; TODO: Temporary hack to never install keyv handler
 org &aa95
     rts
+endif
 
 copyblock &8000, &c000, &0000
 
