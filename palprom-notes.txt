@@ -24,3 +24,9 @@ Is this never going to work? We have EVNTV (and KEYV?) "constantly" paging in ba
 
 OK, the OSBGET at &A9AB is leaving the wrong bank paged in, *probably* because it issues NMI service calls.
 Do we need the same kind of trickery we are doing for "interrupts" in order to preserve the currently selected bank across service handler entries?
+
+
+
+./mame bbcb -rom2 /tmp/Stop_Press_Watford_Release_ROM/STOPPR1.rom -rom3 /tmp/Stop_Press_Watford_Release_ROM/STOPPR2.rom  -flop1 /tmp/Stop_Press_Watford_Release_DISCS/System_Disc.ssd -flop2 /tmp/Stop_Press_Watford_Release_DISCS/Font_Demo_Disc.ssd
+
+./mame -debug bbcb -rom2 iword -flop1 /tmp/Stop_Press_Watford_Release_DISCS/System_Disc.ssd -flop2 /tmp/Stop_Press_Watford_Release_DISCS/Font_Demo_Disc.ssd
