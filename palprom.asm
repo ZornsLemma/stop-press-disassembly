@@ -312,4 +312,11 @@ endif
 
 copyblock &8000, &c000, &0000
 
+; Make all the switching zones identical in both banks. This is probably over-zealous but it may be necessary where we start executing code in a switching zone for a few bytes, and it's simplest and safest just to do everything.
+copyblock &4040, &4060, &0040
+copyblock &7fa0, &7fc0, &3fa0
+copyblock &7fe0, &8000, &3fe0
+copyblock &0060, &0080, &4060
+copyblock &3fc0, &3fe0, &7fc0
+
 save &0000, &8000

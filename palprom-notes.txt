@@ -30,3 +30,5 @@ Do we need the same kind of trickery we are doing for "interrupts" in order to p
 ./mame bbcb -rom2 /tmp/Stop_Press_Watford_Release_ROM/STOPPR1.rom -rom3 /tmp/Stop_Press_Watford_Release_ROM/STOPPR2.rom  -flop1 /tmp/Stop_Press_Watford_Release_DISCS/System_Disc.ssd -flop2 /tmp/Stop_Press_Watford_Release_DISCS/Font_Demo_Disc.ssd
 
 ./mame -debug bbcb -rom2 iword -flop1 /tmp/Stop_Press_Watford_Release_DISCS/System_Disc.ssd -flop2 /tmp/Stop_Press_Watford_Release_DISCS/Font_Demo_Disc.ssd
+
+/bin/cp stop-press-palprom.rom InterWord-1.02.rom; zip -9vr ~/src/mame0269/roms/bbc_rom/iword.zip InterWord-1.02.rom
