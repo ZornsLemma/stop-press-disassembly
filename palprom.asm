@@ -61,10 +61,6 @@ process_string = &be9f
     skipto &8060
     ; This code won't be used normally, but having this here might help testing. I think it means we can use this variant on ROM 1 in place of the original along with the original ROM 2, in order to test the new service handler is basically sound.
     rts
-    ; Switching zones exist in both 16K banks, but the data in the "other" bank
-    ; is invisible as the hardware banking zones make it impossible to read. We
-    ; can therefore shove messages in here, for example.
-    equs "Steve 2024 v0.01"
     skipto &8080
 .skip_8060
     jsr print_nul_terminated_string_at_yx                             ; 8058: 20 c5 b7     ..
@@ -139,8 +135,8 @@ process_string = &be9f
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
 
-common_addresses_diffferent_code = &bf90
-org common_addresses_diffferent_code
+common_addresses_different_code = &bf90
+org common_addresses_different_code
 ; TODO: Should prob use macros to simplify code and ensure these are "same" (except for bit address) in both banks
 .xbrkv_handler_both_bank_1
     jmp xbrkv_handler_switch
@@ -269,7 +265,7 @@ our_osword_1_x25_handler = &9584
     equw our_osword_1_x25_handler                                     ; 809e: 84 95       ..
     assert P% <= &BFA0
 
-org common_addresses_diffferent_code
+org common_addresses_different_code
 .xbrkv_handler_both_bank_0
     jmp xbrkv_handler_bank_0
 .xevntv_handler_both_bank_0
