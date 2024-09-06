@@ -61,6 +61,10 @@ process_string = &be9f
     skipto &8060
     ; This code won't be used normally, but having this here might help testing. I think it means we can use this variant on ROM 1 in place of the original along with the original ROM 2, in order to test the new service handler is basically sound.
     rts
+    ; Switching zones exist in both 16K banks, but the data in the "other" bank
+    ; is invisible as the hardware banking zones make it impossible to read. We
+    ; can therefore shove messages in here, for example.
+    equs "Steve 2024 v0.01"
     skipto &8080
 .skip_8060
     jsr print_nul_terminated_string_at_yx                             ; 8058: 20 c5 b7     ..
