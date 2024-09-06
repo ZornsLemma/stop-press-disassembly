@@ -135,7 +135,8 @@ process_string = &be9f
 
 ; TODO: For now we assume that ROM 1's code will not touch the switch point at &BFCx which would switch in bank 0.
 
-org &bf80
+common_addresses_diffferent_code = &bf90
+org common_addresses_diffferent_code
 ; TODO: Should prob use macros to simplify code and ensure these are "same" (except for bit address) in both banks
 .xbrkv_handler_both_bank_1
     jmp xbrkv_handler_switch
@@ -264,7 +265,7 @@ our_osword_1_x25_handler = &9584
     equw our_osword_1_x25_handler                                     ; 809e: 84 95       ..
     assert P% <= &BFA0
 
-org &bf80
+org common_addresses_diffferent_code
 .xbrkv_handler_both_bank_0
     jmp xbrkv_handler_bank_0
 .xevntv_handler_both_bank_0
