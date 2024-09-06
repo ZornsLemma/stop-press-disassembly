@@ -17,7 +17,7 @@ clear &8000, &c000
 ; To avoid the switch point at &806x, we squeeze the code a bit, mainly by removing support for the auto-boot service entry, which just appears to print a vanity banner.
 
 org &8003
-    jmp service_handler
+    jmp service_handler_bank_1_switch
 
 org &8040
 l00f8 = &f8
@@ -31,7 +31,7 @@ l0001 = 1
 l0002 = 2
 l0003 = 3
 process_string = &be9f
-.service_handler
+.service_handler_bank_1_switch
     jsr &8060 ; chain to other bank service handler
     cmp #0
     beq rts
@@ -167,9 +167,8 @@ org &8000
 incbin "orig/stop-press-2.rom"
 clear &8000, &c000
 
-; Both banks share the same service handler at a switch address for bank 1.
 org &8003
-    jmp service_handler
+    jmp service_handler_bank_0
 
 org &8060
     jmp rom_2_new_service_handler
@@ -283,6 +282,9 @@ xevntv_handler = &b1d1
     jmp xkeyv_handler
 .xevntv_handler_switch
     jmp xevntv_handler
+.service_handler_bank_0
+    jsr service_handler_bank_1_switch
+    rts
 org &aab7
     lda #<xkeyv_handler_both_bank_0
 org &aabc
