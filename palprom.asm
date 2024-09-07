@@ -1,6 +1,5 @@
 ; Patch Stop Press ROMs into a 32K Computer Concepts-style PALPROM
 
-title = &8009
 osnewl = &ffe7
 oswrch = &ffee
 osbyte_osword_a = &ef
@@ -18,6 +17,16 @@ clear &8000, &c000
 
 org &8003
     jmp service_handler_bank_1_switch
+
+new_title = "AMX Stop Press 1.9 PAL"
+org &8007
+    equb copyright - &8000
+org &8009
+.title
+    equs new_title
+.copyright
+    equb 0, "(C) Tecnation 1984-1987", &0d, &0a, 0
+    assert P% <= &803b
 
 org &8040
 l00f8 = &f8
@@ -90,8 +99,10 @@ process_string = &be9f
 ;    jsr oswrch                                                        ; 8087: 20 ee ff     ..            ; Write character 10
 ;    jmp ply_plx_pla_rts                                               ; 808a: 4c 94 80    L..
      ;jmp c808d
-    ldx #&20 ; ' '                                                    ; 808d: a2 20       .
-    ldy #&80                                                          ; 808f: a0 80       ..
+    ;ldx #&20 ; ' '                                                    ; 808d: a2 20       .
+    ;ldy #&80                                                          ; 808f: a0 80       ..
+    ldx #<(copyright+1)
+    ldy #>(copyright+1)
     jsr print_nul_terminated_string_at_yx                             ; 8091: 20 c5 b7     ..
 .ply_plx_pla_rts
     pla                                                               ; 8094: 68          h
@@ -170,6 +181,16 @@ clear &8000, &c000
 
 org &8003
     jmp service_handler_bank_0
+
+; TODO: Factor this common block out into a macro?
+org &8007
+    equb copyright - &8000
+org &8009
+.title2
+    equs new_title
+.copyright2
+    equb 0, "(C) Tecnation 1984-1987", &0d, &0a, 0
+    assert P% <= &803f
 
 org &8060
     jmp rom_2_new_service_handler
