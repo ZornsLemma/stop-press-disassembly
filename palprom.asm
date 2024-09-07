@@ -83,6 +83,7 @@ process_string = &be9f
 ;    pha                                                               ; 805c: 48          H
 ;    cmp #3                                                            ; 805d: c9 03       ..
 ;    beq c8076                                                         ; 805f: f0 15       ..
+    ; TODO: This code could be removed (maybe not the jsr cb76b, but the code after it) now this is in a PALPROM and barring bugs you can't end up with only one of the ROMs installed.
     ldx #0                                                            ; 8061: a2 00       ..
     ldy #&5a ; 'Z'                                                    ; 8063: a0 5a       .Z
     jsr cb76b                                                         ; 8065: 20 6b b7     k.
