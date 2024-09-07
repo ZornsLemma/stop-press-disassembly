@@ -355,4 +355,4 @@ save &0000, &8000
 
 ; TODO: Should we tweak the headers so both banks have the same details? At the moment *ROMS tends to show the support ROM only, which is mildly confusing. While we're at it, it might be worth tweaking the name slightly to indicate this is a PALPROM release.
 
-; TODO: Would this PALPROM work in a CC 64K or 128K bank? Would it be easy to make it work in one if not? We obviously don't need it, but this may increase flexibility.
+; TODO: Would this PALPROM work in a CC 64K or 128K bank? Would it be easy to make it work in one if not? We obviously don't need it, but this may increase flexibility. Looking at the MAME code, there are four switching zones (just one per bank) in a CC 64K PALPROM, at &BF80 onwards (32 bytes each). So it might be possible to do something like only use switching zones &BFC0 and &BFE0, and then a doubled-up 32K image of this PALPROM would probably work in a CC 64K bank. (We'd really only be using banks 2 and 3, but we'd need the doubling up so if bank 0 or 1 got selected by accident on power on, we'd have a valid ROM header etc until our service entry got called and triggered a switch to bank 2 or 3.)
