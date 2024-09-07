@@ -320,3 +320,5 @@ copyblock &0060, &0080, &4060
 copyblock &3fc0, &3fe0, &7fc0
 
 save &0000, &8000
+
+; TODO: Should we tweak the headers so both banks have the same details? At the moment *ROMS tends to show the support ROM only, which is mildly confusing. While we're at it, it might be worth tweaking the name slightly to indicate this is a PALPROM release.
