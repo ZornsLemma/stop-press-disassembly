@@ -354,3 +354,5 @@ copyblock &3fc0, &3fe0, &7fc0
 save &0000, &8000
 
 ; TODO: Should we tweak the headers so both banks have the same details? At the moment *ROMS tends to show the support ROM only, which is mildly confusing. While we're at it, it might be worth tweaking the name slightly to indicate this is a PALPROM release.
+
+; TODO: Would this PALPROM work in a CC 64K or 128K bank? Would it be easy to make it work in one if not? We obviously don't need it, but this may increase flexibility.
