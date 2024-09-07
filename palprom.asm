@@ -19,14 +19,20 @@ org &8003
     jmp service_handler_bank_1_switch
 
 new_title = "AMX Stop Press 1.9 PAL"
+COPYRIGHT_IN_HELP = FALSE
 org &8007
     equb copyright - &8000
 org &8009
 .title
     equs new_title
 .copyright
-    equb 0, "(C) Tecnation 1984-1987", &0d, &0a, 0
-    assert P% <= &803b
+    equb 0, "(C) Tecnation 1984-1987"
+    if COPYRIGHT_IN_HELP
+        equb &0d, &0a
+    endif
+    equb 0
+    ; Original service handler starts at &803b but ours has moved to &8040
+    assert P% <= &8040
 
 org &8040
 l00f8 = &f8
@@ -101,9 +107,11 @@ process_string = &be9f
      ;jmp c808d
     ;ldx #&20 ; ' '                                                    ; 808d: a2 20       .
     ;ldy #&80                                                          ; 808f: a0 80       ..
+if COPYRIGHT_IN_HELP
     ldx #<(copyright+1)
     ldy #>(copyright+1)
     jsr print_nul_terminated_string_at_yx                             ; 8091: 20 c5 b7     ..
+endif
 .ply_plx_pla_rts
     pla                                                               ; 8094: 68          h
     tay                                                               ; 8095: a8          .
@@ -189,7 +197,9 @@ org &8009
 .title2
     equs new_title
 .copyright2
-    equb 0, "(C) Tecnation 1984-1987", &0d, &0a, 0
+    equb 0, "(C) Tecnation 1984-1987"
+    ; equb &0d, &0a
+    equb 0
     assert P% <= &803f
 
 org &8060
