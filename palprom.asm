@@ -297,7 +297,7 @@ our_osword_1_x25_handler = &9584
     equw our_osword_1_x25_handler                                     ; 809e: 84 95       ..
 
 ; We have some space here so let's identify this as a modern version to avoid any confusion.
-    equs "Steve 2024 v0.0.1"
+    equs "Steve 2024 v0.01"
     assert P% <= &BFA0
 
 org common_addresses_different_code
